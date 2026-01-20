@@ -4294,8 +4294,20 @@
             "description": "연관 혜택 파트너(Friends) ID",
             "example": 10
           },
+          "keepImageUrls": {
+            "type": "array",
+            "description": "기존 게시글 이미지",
+            "items": {
+              "type": "string"
+            }
+          },
           "shared": {
             "type": "boolean"
+          },
+          "isShared": {
+            "type": "boolean",
+            "description": "커뮤니티 동시 등록 여부",
+            "example": true
           }
         }
       },
@@ -4406,6 +4418,14 @@
             "format": "int64",
             "description": "연관 혜택 파트너(Friends) ID",
             "example": 10
+          },
+          "shared": {
+            "type": "boolean"
+          },
+          "isShared": {
+            "type": "boolean",
+            "description": "커뮤니티 동시 등록 여부",
+            "example": true
           }
         }
       },
@@ -4460,6 +4480,11 @@
             "format": "date-time",
             "description": "댓글 작성 일시",
             "example": "2026-01-19T16:00:00"
+          },
+          "authorProfile": {
+            "type": "string",
+            "description": "작성자 프로필 이미지 URL",
+            "example": "https://api.mykot.com/profiles/user5.jpg"
           }
         }
       },
@@ -6509,13 +6534,13 @@
             "description": "리뷰 대상 매장(Friends) 고유 식별자(ID)",
             "example": 10
           },
+          "shared": {
+            "type": "boolean"
+          },
           "bookmarked": {
             "type": "boolean"
           },
           "liked": {
-            "type": "boolean"
-          },
-          "shared": {
             "type": "boolean"
           },
           "isBookmarked": {
@@ -6527,6 +6552,11 @@
             "type": "boolean",
             "description": "현재 로그인한 유저의 좋아요 여부",
             "example": false
+          },
+          "isShared": {
+            "type": "boolean",
+            "description": "커뮤니티 동시 노출 여부",
+            "example": true
           }
         }
       },
