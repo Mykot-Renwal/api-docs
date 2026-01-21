@@ -4746,6 +4746,11 @@
           "storeTagline": {
             "type": "string",
             "description": "가게 한 줄 소개",
+            "example": "창원 할랄 맛집"
+          },
+          "storeIntroduction": {
+            "type": "string",
+            "description": "가게 소개",
             "example": "창원 최고의 할랄 푸드 전문점입니다."
           },
           "category": {
@@ -4859,6 +4864,9 @@
             "type": "string"
           },
           "storeTagline": {
+            "type": "string"
+          },
+          "storeIntroduction": {
             "type": "string"
           },
           "category": {
@@ -5660,6 +5668,9 @@
             "minLength": 1
           },
           "storeTagline": {
+            "type": "string"
+          },
+          "storeIntroduction": {
             "type": "string"
           },
           "category": {
@@ -6770,10 +6781,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
           "empty": {
