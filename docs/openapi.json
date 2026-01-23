@@ -2064,7 +2064,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsDataObject"
+                  "$ref": "#/components/schemas/RsDataPostLikeResponse"
                 }
               }
             }
@@ -2074,7 +2074,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsDataObject"
+                  "$ref": "#/components/schemas/RsDataPostLikeResponse"
                 }
               }
             }
@@ -2084,7 +2084,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsDataObject"
+                  "$ref": "#/components/schemas/RsDataPostLikeResponse"
                 }
               }
             }
@@ -5559,6 +5559,35 @@
           }
         }
       },
+      "PostLikeResponse": {
+        "type": "object",
+        "description": "게시글 좋아요 결과 응답",
+        "properties": {
+          "likeCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "게시글의 총 좋아요 수",
+            "example": 15
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RsDataPostLikeResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PostLikeResponse"
+          }
+        }
+      },
       "PasswordResetRequest": {
         "type": "object",
         "description": "비밀번호 재설정 요청 데이터",
@@ -6723,15 +6752,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
