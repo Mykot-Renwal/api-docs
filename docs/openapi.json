@@ -2925,7 +2925,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserDeleteRequest"
+                "$ref": "#/components/schemas/UserWithdrawRequest"
               }
             }
           },
@@ -6752,15 +6752,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -6922,17 +6922,33 @@
             "format": "int64",
             "description": "총 누적 이용 시간 (단위: 초)",
             "example": 3600
+          },
+          "withdrawalType": {
+            "type": "string",
+            "description": "탈퇴 로그",
+            "example": "사용자 본인"
           }
         }
       },
-      "UserDeleteRequest": {
+      "UserWithdrawRequest": {
         "type": "object",
-        "description": "회원 탈퇴 요청 데이터",
         "properties": {
           "password": {
+            "type": "string"
+          },
+          "reasonType": {
             "type": "string",
-            "description": "본인 확인을 위한 현재 비밀번호",
-            "example": "password123!"
+            "enum": [
+              "INFREQUENT_USE",
+              "LACK_OF_CONTENT",
+              "INCONVENIENT_UI",
+              "COMPETITOR_SERVICE",
+              "PRIVACY_CONCERNS",
+              "OTHER"
+            ]
+          },
+          "detailReason": {
+            "type": "string"
           }
         }
       }
