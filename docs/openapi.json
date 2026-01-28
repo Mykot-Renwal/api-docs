@@ -1816,6 +1816,39 @@
         }
       }
     },
+    "/api/v1/translation": {
+      "post": {
+        "tags": [
+          "translation-controller"
+        ],
+        "operationId": "getTranslation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TranslationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/supporters/apply": {
       "post": {
         "tags": [
@@ -5396,6 +5429,17 @@
           }
         }
       },
+      "TranslationRequest": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "targetLang": {
+            "type": "string"
+          }
+        }
+      },
       "SupporterRequest": {
         "type": "object",
         "description": "서포터즈 지원 신청 요청 데이터",
@@ -6752,15 +6796,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
