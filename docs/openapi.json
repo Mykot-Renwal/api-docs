@@ -2458,6 +2458,25 @@
         "summary": "프랜즈 목록 조회",
         "description": "승인된 모든 프랜즈 정보를 조회합니다. Status가 APPROVED인 프랜즈만 조회됩니다.",
         "operationId": "getAllBenefitPartners",
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "latest"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "프랜즈 목록 조회 성공",
@@ -4733,13 +4752,13 @@
             "description": "새로운 메뉴 사진 첨부 여부",
             "example": true
           },
+          "halal": {
+            "type": "boolean"
+          },
           "main": {
             "type": "boolean"
           },
           "photoDeleted": {
-            "type": "boolean"
-          },
-          "halal": {
             "type": "boolean"
           },
           "vegan": {
@@ -4791,10 +4810,9 @@
             "description": "카테고리 (RESTAURANT, CAFE, MART, SALON, ETC)",
             "enum": [
               "FOOD",
-              "RETAIL",
-              "MEDICAL",
-              "SERVICE",
-              "INFO"
+              "STAY",
+              "BEAUTY",
+              "SHOPPING"
             ],
             "example": "RESTAURANT"
           },
@@ -4906,10 +4924,9 @@
             "type": "string",
             "enum": [
               "FOOD",
-              "RETAIL",
-              "MEDICAL",
-              "SERVICE",
-              "INFO"
+              "STAY",
+              "BEAUTY",
+              "SHOPPING"
             ]
           },
           "businessHours": {
@@ -5032,10 +5049,10 @@
             "type": "integer",
             "format": "int32"
           },
-          "main": {
+          "halal": {
             "type": "boolean"
           },
-          "halal": {
+          "main": {
             "type": "boolean"
           },
           "vegan": {
@@ -5750,10 +5767,9 @@
             "type": "string",
             "enum": [
               "FOOD",
-              "RETAIL",
-              "MEDICAL",
-              "SERVICE",
-              "INFO"
+              "STAY",
+              "BEAUTY",
+              "SHOPPING"
             ]
           },
           "businessHours": {
@@ -5834,10 +5850,9 @@
             "description": "업체 카테고리",
             "enum": [
               "FOOD",
-              "RETAIL",
-              "MEDICAL",
-              "SERVICE",
-              "INFO"
+              "STAY",
+              "BEAUTY",
+              "SHOPPING"
             ],
             "example": "FOOD"
           },
@@ -6796,15 +6811,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
