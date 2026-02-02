@@ -684,6 +684,13 @@
                       "type": "string",
                       "format": "binary"
                     }
+                  },
+                  "licenseImages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
                   }
                 },
                 "required": [
@@ -2518,6 +2525,13 @@
                     }
                   },
                   "menuImages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "licenseImages": {
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -4752,13 +4766,13 @@
             "description": "새로운 메뉴 사진 첨부 여부",
             "example": true
           },
-          "halal": {
-            "type": "boolean"
-          },
           "main": {
             "type": "boolean"
           },
           "photoDeleted": {
+            "type": "boolean"
+          },
+          "halal": {
             "type": "boolean"
           },
           "vegan": {
@@ -4816,15 +4830,23 @@
             ],
             "example": "RESTAURANT"
           },
-          "city": {
+          "businessNumber": {
             "type": "string",
-            "description": "도시 (시/도)",
-            "example": "경상남도"
+            "description": "사업자등록번호",
+            "example": "123-45-67890"
           },
-          "district": {
+          "deletedLicenseIds": {
+            "type": "array",
+            "description": "삭제할 사업자 인증 이미지 ID 목록",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "zipCode": {
             "type": "string",
-            "description": "구/군",
-            "example": "창원시 의창구"
+            "description": "우편번호",
+            "example": 50999
           },
           "roadAddress": {
             "type": "string",
@@ -4914,6 +4936,15 @@
           "businessName": {
             "type": "string"
           },
+          "businessNumber": {
+            "type": "string"
+          },
+          "licenseImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LicenseImageResponse"
+            }
+          },
           "storeTagline": {
             "type": "string"
           },
@@ -4941,10 +4972,7 @@
           "contactNumber": {
             "type": "string"
           },
-          "city": {
-            "type": "string"
-          },
-          "district": {
+          "zipCode": {
             "type": "string"
           },
           "roadAddress": {
@@ -5025,6 +5053,18 @@
           }
         }
       },
+      "LicenseImageResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "imagePath": {
+            "type": "string"
+          }
+        }
+      },
       "MenuResponse": {
         "type": "object",
         "properties": {
@@ -5049,10 +5089,10 @@
             "type": "integer",
             "format": "int32"
           },
-          "halal": {
+          "main": {
             "type": "boolean"
           },
-          "main": {
+          "halal": {
             "type": "boolean"
           },
           "vegan": {
@@ -5757,6 +5797,17 @@
             "type": "string",
             "minLength": 1
           },
+          "businessNumber": {
+            "type": "string",
+            "minLength": 1
+          },
+          "licenseImages": {
+            "type": "array",
+            "description": "인증 서류 이미지 경로 리스트",
+            "items": {
+              "type": "string"
+            }
+          },
           "storeTagline": {
             "type": "string"
           },
@@ -5786,11 +5837,7 @@
             "type": "string",
             "minLength": 1
           },
-          "city": {
-            "type": "string",
-            "minLength": 1
-          },
-          "district": {
+          "zipCode": {
             "type": "string",
             "minLength": 1
           },
@@ -5844,6 +5891,18 @@
             "type": "string",
             "description": "상호명",
             "example": "맛있는 식당"
+          },
+          "businessNumber": {
+            "type": "string",
+            "description": "사업자번호",
+            "example": "123-45-67890"
+          },
+          "licenseImages": {
+            "type": "array",
+            "description": "사업자 인증 이미지 목록",
+            "items": {
+              "$ref": "#/components/schemas/LicenseImageResponse"
+            }
           },
           "category": {
             "type": "string",
