@@ -2917,6 +2917,37 @@
         }
       }
     },
+    "/api/v1/auth/apple/callback": {
+      "post": {
+        "tags": [
+          "apple-controller"
+        ],
+        "operationId": "appleLogin",
+        "parameters": [
+          {
+            "name": "id_token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/users/password": {
       "patch": {
         "tags": [
@@ -3955,6 +3986,19 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/apple/login": {
+      "get": {
+        "tags": [
+          "apple-controller"
+        ],
+        "operationId": "redirectToApple",
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -6870,15 +6914,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
