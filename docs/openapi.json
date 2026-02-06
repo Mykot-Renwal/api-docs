@@ -2482,6 +2482,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -5059,10 +5067,18 @@
             "type": "number",
             "format": "double"
           },
+          "reviewCount": {
+            "type": "integer",
+            "format": "int64"
+          },
           "userId": {
             "type": "integer",
             "format": "int64",
             "description": "등록자 ID"
+          },
+          "minPrice": {
+            "type": "integer",
+            "format": "int32"
           },
           "menus": {
             "type": "array",
@@ -6739,10 +6755,10 @@
           "shared": {
             "type": "boolean"
           },
-          "liked": {
+          "bookmarked": {
             "type": "boolean"
           },
-          "bookmarked": {
+          "liked": {
             "type": "boolean"
           },
           "isBookmarked": {
