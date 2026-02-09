@@ -1950,7 +1950,7 @@
           {
             "name": "keyword",
             "in": "query",
-            "description": "검색 키워드 (제목 또는 내용)",
+            "description": "검색 키워드 (내용)",
             "required": false,
             "schema": {
               "type": "string"
@@ -1964,10 +1964,9 @@
             "schema": {
               "type": "string",
               "enum": [
-                "GENERAL",
+                "UNDEFINED",
                 "QNA",
                 "DAILY",
-                "INFO",
                 "REVIEW"
               ]
             }
@@ -4360,12 +4359,6 @@
         "type": "object",
         "description": "게시글 생성 및 수정 요청 데이터",
         "properties": {
-          "title": {
-            "type": "string",
-            "description": "게시글 제목",
-            "example": "창원 가로수길 맛집 추천합니다!",
-            "minLength": 1
-          },
           "content": {
             "type": "string",
             "description": "게시글 내용",
@@ -4376,10 +4369,9 @@
             "type": "string",
             "description": "게시글 카테고리 (QNA, DAILY, INFO, REVIEW)",
             "enum": [
-              "GENERAL",
+              "UNDEFINED",
               "QNA",
               "DAILY",
-              "INFO",
               "REVIEW"
             ],
             "example": "REVIEW"
@@ -4494,11 +4486,6 @@
             "format": "int64",
             "description": "생성/수정된 게시글의 고유 식별자(ID)",
             "example": 1
-          },
-          "title": {
-            "type": "string",
-            "description": "게시글 제목",
-            "example": "창원 가로수길 맛집 추천합니다!"
           },
           "content": {
             "type": "string",
@@ -6652,11 +6639,6 @@
             "description": "게시글 고유 식별자(ID)",
             "example": 1
           },
-          "title": {
-            "type": "string",
-            "description": "게시글 제목",
-            "example": "창원 가로수길 맛집 추천합니다!"
-          },
           "userId": {
             "type": "integer",
             "format": "int64",
@@ -6693,10 +6675,9 @@
             "type": "string",
             "description": "카테고리 코드 (QNA, DAILY, INFO, REVIEW)",
             "enum": [
-              "GENERAL",
+              "UNDEFINED",
               "QNA",
               "DAILY",
-              "INFO",
               "REVIEW"
             ],
             "example": "REVIEW"
@@ -6948,9 +6929,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "unpaged": {
-            "type": "boolean"
-          },
           "paged": {
             "type": "boolean"
           },
@@ -6961,6 +6939,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
