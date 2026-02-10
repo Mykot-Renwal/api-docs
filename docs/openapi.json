@@ -2466,28 +2466,11 @@
         "operationId": "getAllBenefitPartners",
         "parameters": [
           {
-            "name": "sort",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": "latest"
-            }
-          },
-          {
-            "name": "keyword",
+            "name": "request",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "category",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/FriendsSearchRequest"
             }
           }
         ],
@@ -4351,6 +4334,66 @@
           }
         }
       }
+    },
+    "/api/v1/admin/data/fetch-shopping": {
+      "get": {
+        "tags": [
+          "admin-data-controller"
+        ],
+        "operationId": "fetchShoppingData",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/data/fetch-food": {
+      "get": {
+        "tags": [
+          "admin-data-controller"
+        ],
+        "operationId": "fetchFoodData",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/data/fetch-beauty": {
+      "get": {
+        "tags": [
+          "admin-data-controller"
+        ],
+        "operationId": "fetchBeautyData",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4805,16 +4848,16 @@
             "description": "새로운 메뉴 사진 첨부 여부",
             "example": true
           },
-          "main": {
-            "type": "boolean"
-          },
-          "photoDeleted": {
-            "type": "boolean"
-          },
           "halal": {
             "type": "boolean"
           },
           "vegan": {
+            "type": "boolean"
+          },
+          "main": {
+            "type": "boolean"
+          },
+          "photoDeleted": {
             "type": "boolean"
           },
           "isHalal": {
@@ -4835,6 +4878,11 @@
           "isMain": {
             "type": "boolean",
             "description": "대표 메뉴 여부",
+            "example": true
+          },
+          "mainService": {
+            "type": "boolean",
+            "description": "대표 서비스",
             "example": true
           }
         }
@@ -5085,6 +5133,9 @@
           },
           "rejectionReason": {
             "type": "string"
+          },
+          "official": {
+            "type": "boolean"
           }
         }
       },
@@ -5136,13 +5187,16 @@
             "type": "integer",
             "format": "int32"
           },
-          "main": {
+          "mainService": {
             "type": "boolean"
           },
           "halal": {
             "type": "boolean"
           },
           "vegan": {
+            "type": "boolean"
+          },
+          "main": {
             "type": "boolean"
           }
         }
@@ -6911,15 +6965,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -6977,6 +7031,50 @@
           },
           "empty": {
             "type": "boolean"
+          }
+        }
+      },
+      "FriendsSearchRequest": {
+        "type": "object",
+        "properties": {
+          "sort": {
+            "type": "string"
+          },
+          "keyword": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "budget": {
+            "type": "string"
+          },
+          "who": {
+            "type": "string"
+          },
+          "craving": {
+            "type": "string"
+          },
+          "check": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "item": {
+            "type": "string"
+          },
+          "vibe": {
+            "type": "string"
+          },
+          "goal": {
+            "type": "string"
+          },
+          "trip": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
           }
         }
       },
