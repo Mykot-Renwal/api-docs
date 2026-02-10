@@ -6733,10 +6733,10 @@
             "description": "리뷰 대상 매장(Friends) 고유 식별자(ID)",
             "example": 10
           },
-          "shared": {
+          "bookmarked": {
             "type": "boolean"
           },
-          "bookmarked": {
+          "shared": {
             "type": "boolean"
           },
           "liked": {
