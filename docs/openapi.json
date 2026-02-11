@@ -4454,6 +4454,13 @@
               "type": "string"
             }
           },
+          "keepVideoUrls": {
+            "type": "array",
+            "description": "기존 게시글 동영상",
+            "items": {
+              "type": "string"
+            }
+          },
           "shared": {
             "type": "boolean"
           },
