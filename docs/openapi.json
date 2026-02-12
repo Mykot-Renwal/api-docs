@@ -6433,15 +6433,19 @@
             "description": "프로필 이미지 URL 경로",
             "example": "https://api.mykot.com/profiles/user1.jpg"
           },
-          "role": {
-            "type": "string",
+          "roles": {
+            "type": "array",
             "description": "사용자 권한 (USER, ADMIN 등)",
-            "enum": [
-              "ADMIN",
-              "USER",
-              "SUPPORTER"
-            ],
-            "example": "USER"
+            "example": "USER",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ADMIN",
+                "USER",
+                "SUPPORTER"
+              ]
+            },
+            "uniqueItems": true
           },
           "ssoProvider": {
             "type": "string",
@@ -7050,15 +7054,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
