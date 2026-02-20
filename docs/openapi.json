@@ -1320,6 +1320,50 @@
         }
       }
     },
+    "/api/v1/admin/partner/edit-requests/{requestId}/status": {
+      "put": {
+        "tags": [
+          "관리자 - 베네핏 파트너 관리"
+        ],
+        "operationId": "changeEditRequestStatus",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/job-offer/{offerId}": {
       "get": {
         "tags": [
@@ -2724,43 +2768,70 @@
         }
       }
     },
-    "/api/v1/friends/{id}/google-reviews": {
+    "/api/v1/friends/report": {
       "post": {
         "tags": [
           "마이콧 프랜즈"
         ],
-        "summary": "구글 리뷰 갱신",
-        "description": "외부 크롤러로부터 수집된 구글 리뷰 데이터를 받아 매장 정보를 최신 상태로 갱신합니다.",
-        "operationId": "updateGoogleReviews",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "프랜즈 ID",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
+        "summary": "프랜즈 정보 수정 요청 제출",
+        "description": "일반 사용자가 매장의 틀린 정보를 수정해달라고 사진과 함께 요청을 보냅니다.",
+        "operationId": "reportUpdate",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateGoogleReviewRequest"
+                "type": "object",
+                "properties": {
+                  "request": {
+                    "$ref": "#/components/schemas/FriendsEditInformationRequest"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "user": {
+                    "$ref": "#/components/schemas/SecurityUser"
+                  }
+                },
+                "required": [
+                  "images",
+                  "request"
+                ]
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "수정 요청 제출 성공",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsDataObject"
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "이미지가 첨부되지 않았거나 잘못된 데이터",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataLong"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "프랜즈 정보를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataLong"
                 }
               }
             }
@@ -3855,40 +3926,6 @@
         }
       }
     },
-    "/api/v1/friends/{partnerId}/google-reviews": {
-      "get": {
-        "tags": [
-          "마이콧 프랜즈"
-        ],
-        "summary": "구글 리뷰 조회",
-        "description": "특정 매장에 등록된 구글 리뷰 목록을 조회합니다.",
-        "operationId": "getGoogleReviews",
-        "parameters": [
-          {
-            "name": "partnerId",
-            "in": "path",
-            "description": "프랜즈 ID",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/friends/my-list": {
       "get": {
         "tags": [
@@ -4575,6 +4612,36 @@
         }
       }
     },
+    "/api/v1/admin/partner/edit-requests": {
+      "get": {
+        "tags": [
+          "관리자 - 베네핏 파트너 관리"
+        ],
+        "operationId": "getEditRequestList",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListFriendsEditInformationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/job-offer": {
       "get": {
         "tags": [
@@ -5102,6 +5169,29 @@
           }
         }
       },
+      "BusinessHourRequest": {
+        "type": "object",
+        "properties": {
+          "dayOfWeek": {
+            "type": "string",
+            "description": "요일",
+            "example": "MON"
+          },
+          "openTime": {
+            "type": "string",
+            "description": "오픈 시간",
+            "example": "09:00"
+          },
+          "closeTime": {
+            "type": "string",
+            "description": "마감 시간",
+            "example": "22:00"
+          },
+          "closed": {
+            "type": "boolean"
+          }
+        }
+      },
       "MenuRequest": {
         "type": "object",
         "description": "메뉴 수정/생성 요청 데이터",
@@ -5139,13 +5229,13 @@
             "description": "새로운 메뉴 사진 첨부 여부",
             "example": true
           },
+          "main": {
+            "type": "boolean"
+          },
           "halal": {
             "type": "boolean"
           },
           "vegan": {
-            "type": "boolean"
-          },
-          "main": {
             "type": "boolean"
           },
           "photoDeleted": {
@@ -5242,9 +5332,11 @@
             "example": "010-1234-5678"
           },
           "businessHours": {
-            "type": "string",
-            "description": "영업 시간",
-            "example": "매일 10:00 ~ 22:00"
+            "type": "array",
+            "description": "영업시간 정보",
+            "items": {
+              "$ref": "#/components/schemas/BusinessHourRequest"
+            }
           },
           "breakTime": {
             "type": "string",
@@ -5339,7 +5431,10 @@
             ]
           },
           "businessHours": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BusinessHourResponse"
+            }
           },
           "offDays": {
             "type": "string"
@@ -5412,12 +5507,6 @@
               "$ref": "#/components/schemas/MenuResponse"
             }
           },
-          "googleRating": {
-            "type": "string"
-          },
-          "googleReviewCount": {
-            "type": "string"
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -5426,6 +5515,23 @@
             "type": "string"
           },
           "official": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BusinessHourResponse": {
+        "type": "object",
+        "properties": {
+          "dayOfWeek": {
+            "type": "string"
+          },
+          "openTime": {
+            "type": "string"
+          },
+          "closeTime": {
+            "type": "string"
+          },
+          "closed": {
             "type": "boolean"
           }
         }
@@ -5481,13 +5587,13 @@
           "mainService": {
             "type": "boolean"
           },
+          "main": {
+            "type": "boolean"
+          },
           "halal": {
             "type": "boolean"
           },
           "vegan": {
-            "type": "boolean"
-          },
-          "main": {
             "type": "boolean"
           }
         }
@@ -5662,6 +5768,20 @@
             "type": "string",
             "description": "사용 언어 (KOREAN, ENGLISH 등)",
             "example": "KOREAN"
+          }
+        }
+      },
+      "RsDataVoid": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
           }
         }
       },
@@ -5863,20 +5983,6 @@
           "code",
           "email"
         ]
-      },
-      "RsDataVoid": {
-        "type": "object",
-        "properties": {
-          "resultCode": {
-            "type": "string"
-          },
-          "msg": {
-            "type": "string"
-          },
-          "data": {
-            "type": "object"
-          }
-        }
       },
       "TranslationRequest": {
         "type": "object",
@@ -6307,8 +6413,12 @@
             ]
           },
           "businessHours": {
-            "type": "string",
-            "minLength": 1
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BusinessHourRequest"
+            },
+            "maxItems": 2147483647,
+            "minItems": 1
           },
           "offDays": {
             "type": "string"
@@ -6357,6 +6467,7 @@
           }
         },
         "required": [
+          "businessHours",
           "category"
         ]
       },
@@ -6445,53 +6556,34 @@
           }
         }
       },
-      "GoogleReviewItem": {
+      "FriendsEditInformationRequest": {
         "type": "object",
-        "description": "구글 리뷰 개별 항목 데이터",
         "properties": {
-          "author": {
-            "type": "string",
-            "description": "리뷰 작성자 이름",
-            "example": "김철수"
-          },
-          "rating": {
+          "friendsId": {
             "type": "integer",
-            "format": "int32",
-            "description": "리뷰 작성자 평점",
-            "example": 5
+            "format": "int64"
           },
           "content": {
             "type": "string",
-            "description": "리뷰 본문 내용",
-            "example": "매장이 깔끔하고 서비스가 친절해서 좋았습니다."
-          },
-          "wroteAt": {
-            "type": "string",
-            "description": "리뷰 작성 시점 (상대적 시간 또는 날짜)",
-            "example": "1주일 전"
+            "minLength": 1
           }
-        }
+        },
+        "required": [
+          "friendsId"
+        ]
       },
-      "UpdateGoogleReviewRequest": {
+      "RsDataLong": {
         "type": "object",
-        "description": "구글 리뷰 정보 업데이트 요청 데이터",
         "properties": {
-          "rating": {
-            "type": "string",
-            "description": "구글 평점 (문자열)",
-            "example": 4.5
+          "resultCode": {
+            "type": "string"
           },
-          "reviewCount": {
-            "type": "string",
-            "description": "리뷰 총 개수 (문자열)",
-            "example": 128
+          "msg": {
+            "type": "string"
           },
-          "reviews": {
-            "type": "array",
-            "description": "개별 리뷰 상세 목록",
-            "items": {
-              "$ref": "#/components/schemas/GoogleReviewItem"
-            }
+          "data": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -7520,15 +7612,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -7739,6 +7831,61 @@
             "type": "string",
             "description": "탈퇴 로그",
             "example": "사용자 본인"
+          }
+        }
+      },
+      "FriendsEditInformationResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "partnerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "businessName": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "imageUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RsDataListFriendsEditInformationResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FriendsEditInformationResponse"
+            }
           }
         }
       },
