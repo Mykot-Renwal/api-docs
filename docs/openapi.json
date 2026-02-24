@@ -3203,6 +3203,138 @@
         }
       }
     },
+    "/api/v1/admin/data/fetch-stay": {
+      "post": {
+        "tags": [
+          "admin-data-controller"
+        ],
+        "operationId": "fetchStayData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/data/fetch-shopping": {
+      "post": {
+        "tags": [
+          "admin-data-controller"
+        ],
+        "operationId": "fetchShoppingData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/data/fetch-food": {
+      "post": {
+        "tags": [
+          "admin-data-controller"
+        ],
+        "operationId": "fetchFoodData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/data/fetch-beauty": {
+      "post": {
+        "tags": [
+          "admin-data-controller"
+        ],
+        "operationId": "fetchBeautyData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users/password": {
       "patch": {
         "tags": [
@@ -4685,66 +4817,6 @@
           }
         }
       }
-    },
-    "/api/v1/admin/data/fetch-shopping": {
-      "get": {
-        "tags": [
-          "admin-data-controller"
-        ],
-        "operationId": "fetchShoppingData",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/admin/data/fetch-food": {
-      "get": {
-        "tags": [
-          "admin-data-controller"
-        ],
-        "operationId": "fetchFoodData",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/admin/data/fetch-beauty": {
-      "get": {
-        "tags": [
-          "admin-data-controller"
-        ],
-        "operationId": "fetchBeautyData",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -5187,8 +5259,10 @@
             "description": "마감 시간",
             "example": "22:00"
           },
-          "closed": {
-            "type": "boolean"
+          "isClosed": {
+            "type": "boolean",
+            "description": "휴무 여부",
+            "example": false
           }
         }
       },
@@ -5514,8 +5588,12 @@
           "rejectionReason": {
             "type": "string"
           },
-          "official": {
-            "type": "boolean"
+          "officialBusinessHours": {
+            "type": "string"
+          },
+          "is_official": {
+            "type": "boolean",
+            "description": "공식 데이터 여부"
           }
         }
       },
@@ -7634,15 +7712,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
