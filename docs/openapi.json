@@ -1838,39 +1838,6 @@
         }
       }
     },
-    "/api/v1/users/extend-session": {
-      "post": {
-        "tags": [
-          "유저 관리 API",
-          "토큰 세션 연장 API"
-        ],
-        "summary": "세션 유효 기간 연장",
-        "description": "리프레시 토큰의 만료 임계치에 도달했을 때 새로운 토큰 쿠키를 발급하여 로그인 상태를 유지합니다.",
-        "operationId": "extendSession",
-        "responses": {
-          "200": {
-            "description": "세션 연장 성공",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/RsDataVoid"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "인증되지 않은 사용자 (로그인 필요)",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/RsDataVoid"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/translation": {
       "post": {
         "tags": [
@@ -6037,6 +6004,11 @@
             "type": "string",
             "description": "사용자 비밀번호",
             "example": "password123!"
+          },
+          "keepLogin": {
+            "type": "boolean",
+            "description": "로그인 유지 여부",
+            "example": false
           }
         }
       },
@@ -7727,15 +7699,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
