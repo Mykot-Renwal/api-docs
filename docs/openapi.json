@@ -3118,6 +3118,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -5970,17 +5978,17 @@
             "type": "string",
             "maxLength": 10,
             "minLength": 2,
-            "pattern": "^[가-힣a-zA-Z0-9]*$"
+            "pattern": "^[\\p{L}\\p{N}]{2,10}$"
           },
           "name": {
             "type": "string",
             "minLength": 1,
-            "pattern": "^[가-힣a-zA-Z]*$"
+            "pattern": "^[\\p{L}\\p{M} ]{2,20}$"
           },
           "phone": {
             "type": "string",
             "minLength": 1,
-            "pattern": "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$"
+            "pattern": "^[0-9\\-+\\s()]{7,20}$"
           },
           "profileImage": {
             "type": "string",
@@ -7699,15 +7707,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
