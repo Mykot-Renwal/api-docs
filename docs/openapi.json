@@ -6397,6 +6397,52 @@
             "type": "boolean",
             "description": "운전 가능 여부",
             "example": true
+          },
+          "weekdayAvailable": {
+            "type": "boolean",
+            "description": "평일 활동 가능 여부",
+            "example": true
+          },
+          "weekdayStartTime": {
+            "type": "string",
+            "description": "평일 시작 시간",
+            "example": "09:00"
+          },
+          "weekdayEndTime": {
+            "type": "string",
+            "description": "평일 종료 시간",
+            "example": "18:00"
+          },
+          "weekendAvailable": {
+            "type": "boolean",
+            "description": "주말 활동 가능 여부",
+            "example": false
+          },
+          "weekendStartTime": {
+            "type": "string",
+            "description": "주말 시작 시간",
+            "example": "10:00"
+          },
+          "weekendEndTime": {
+            "type": "string",
+            "description": "주말 종료 시간",
+            "example": "22:00"
+          },
+          "weekdayDays": {
+            "type": "array",
+            "description": "평일 선택",
+            "example": "22:00",
+            "items": {
+              "type": "string"
+            }
+          },
+          "weekendDays": {
+            "type": "array",
+            "description": "주말 선택",
+            "example": "22:00",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "required": [
@@ -7623,6 +7669,50 @@
           "shortIntro": {
             "type": "string",
             "description": "짧은 소개(상세)"
+          },
+          "weekdayAvailable": {
+            "type": "boolean",
+            "description": "평일 활동 가능 여부"
+          },
+          "weekdayStartTime": {
+            "type": "string",
+            "description": "평일 시작 시간",
+            "example": "09:00"
+          },
+          "weekdayEndTime": {
+            "type": "string",
+            "description": "평일 종료 시간",
+            "example": "18:00"
+          },
+          "weekendAvailable": {
+            "type": "boolean",
+            "description": "주말 활동 가능 여부"
+          },
+          "weekendStartTime": {
+            "type": "string",
+            "description": "주말 시작 시간",
+            "example": "10:00"
+          },
+          "weekendEndTime": {
+            "type": "string",
+            "description": "주말 종료 시간",
+            "example": "22:00"
+          },
+          "weekdayDays": {
+            "type": "array",
+            "description": "평일 선택",
+            "example": "22:00",
+            "items": {
+              "type": "string"
+            }
+          },
+          "weekendDays": {
+            "type": "array",
+            "description": "주말 선택",
+            "example": "22:00",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
