@@ -91,6 +91,171 @@
     }
   ],
   "paths": {
+    "/api/v1/routes/{id}": {
+      "get": {
+        "tags": [
+          "마이콧 로컬루트"
+        ],
+        "summary": "로컬 루트 상세 조회",
+        "description": "ID를 통해 특정 로컬 루트의 모든 상세 정보와 태그를 조회합니다.",
+        "operationId": "getDetail",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "조회할 루트의 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "해당 ID의 코스를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataRouteDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "마이콧 로컬루트"
+        ],
+        "summary": "로컬 루트 수정",
+        "operationId": "updateRoute",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "request": {
+                    "$ref": "#/components/schemas/CreateRouteRequest"
+                  },
+                  "coverImage": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "itemImages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "user": {
+                    "$ref": "#/components/schemas/SecurityUser"
+                  }
+                },
+                "required": [
+                  "request"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "마이콧 로컬루트"
+        ],
+        "summary": "로컬 루트 삭제",
+        "operationId": "deleteRoute",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "삭제할 루트의 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "삭제 권한 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "해당 루트를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/post/{postId}": {
       "get": {
         "tags": [
@@ -3853,44 +4018,95 @@
         }
       }
     },
-    "/api/v1/routes/{id}": {
+    "/api/v1/routes/recommend": {
       "get": {
         "tags": [
           "마이콧 로컬루트"
         ],
-        "summary": "로컬 루트 상세 조회",
-        "description": "ID를 통해 특정 로컬 루트의 모든 상세 정보와 태그를 조회합니다.",
-        "operationId": "getDetail",
+        "summary": "추천 로컬 루트 조회",
+        "description": "조건에 맞는 루트를 추천합니다.",
+        "operationId": "getRecommendedRoutes",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "조회할 루트의 ID",
-            "required": true,
+            "name": "companion",
+            "in": "query",
+            "required": false,
             "schema": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "example": 1
+              "type": "string",
+              "enum": [
+                "SOLO",
+                "COUPLE",
+                "FAMILY",
+                "FRIENDS"
+              ]
+            }
+          },
+          {
+            "name": "stay",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SHORT",
+                "MID",
+                "LONG",
+                "HALF",
+                "FULL"
+              ]
+            }
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PHOTO",
+                "LOCAL",
+                "RELAX",
+                "EASY",
+                "TIME",
+                "LANG"
+              ]
+            }
+          },
+          {
+            "name": "travelType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "FIRST",
+                "REPEAT"
+              ]
+            }
+          },
+          {
+            "name": "transportation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "WALK",
+                "CAR",
+                "PUBLIC_TRANSPORTATION",
+                "BICYCLE",
+                "ALL"
+              ]
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "조회 성공",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsData"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "해당 ID의 코스를 찾을 수 없음",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/RsDataRouteDetailResponse"
+                  "$ref": "#/components/schemas/RsDataRecommendationResponse"
                 }
               }
             }
@@ -4983,6 +5199,221 @@
   },
   "components": {
     "schemas": {
+      "CreateRouteRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "string"
+          },
+          "transportation": {
+            "type": "string",
+            "enum": [
+              "WALK",
+              "CAR",
+              "PUBLIC_TRANSPORTATION",
+              "BICYCLE",
+              "ALL"
+            ]
+          },
+          "estimatedBudget": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "introduction": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemRequest"
+            }
+          },
+          "themes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "MOUNTAIN",
+                "SEA",
+                "FOREST",
+                "CULTURE",
+                "HISTORY",
+                "ART",
+                "HEALING",
+                "CAFE",
+                "FOOD",
+                "NIGHT"
+              ]
+            }
+          },
+          "tagNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "targetCompanion": {
+            "type": "string",
+            "enum": [
+              "SOLO",
+              "COUPLE",
+              "FAMILY",
+              "FRIENDS"
+            ]
+          },
+          "targetStay": {
+            "type": "string",
+            "enum": [
+              "SHORT",
+              "MID",
+              "LONG",
+              "HALF",
+              "FULL"
+            ]
+          },
+          "targetPriority": {
+            "type": "string",
+            "enum": [
+              "PHOTO",
+              "LOCAL",
+              "RELAX",
+              "EASY",
+              "TIME",
+              "LANG"
+            ]
+          },
+          "targetType": {
+            "type": "string",
+            "enum": [
+              "FIRST",
+              "REPEAT"
+            ]
+          }
+        }
+      },
+      "ItemRequest": {
+        "type": "object",
+        "properties": {
+          "placeName": {
+            "type": "string"
+          },
+          "zipNo": {
+            "type": "string"
+          },
+          "roadAddr": {
+            "type": "string"
+          },
+          "detailAddr": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "sequence": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "visitTime": {
+            "type": "string"
+          },
+          "transportMethod": {
+            "type": "string",
+            "enum": [
+              "WALK",
+              "CAR",
+              "PUBLIC_TRANSPORTATION",
+              "BICYCLE"
+            ]
+          },
+          "transportMemo": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "tip": {
+            "type": "string"
+          }
+        }
+      },
+      "GrantedAuthority": {
+        "type": "object",
+        "properties": {
+          "authority": {
+            "type": "string"
+          }
+        }
+      },
+      "SecurityUser": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "authorities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GrantedAuthority"
+            }
+          },
+          "accountNonExpired": {
+            "type": "boolean"
+          },
+          "accountNonLocked": {
+            "type": "boolean"
+          },
+          "credentialsNonExpired": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "email": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "RsDataObject": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
       "CreatePostRequest": {
         "type": "object",
         "description": "게시글 생성 및 수정 요청 데이터",
@@ -5064,62 +5495,6 @@
           }
         }
       },
-      "GrantedAuthority": {
-        "type": "object",
-        "properties": {
-          "authority": {
-            "type": "string"
-          }
-        }
-      },
-      "SecurityUser": {
-        "type": "object",
-        "properties": {
-          "password": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          },
-          "authorities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GrantedAuthority"
-            }
-          },
-          "accountNonExpired": {
-            "type": "boolean"
-          },
-          "accountNonLocked": {
-            "type": "boolean"
-          },
-          "credentialsNonExpired": {
-            "type": "boolean"
-          },
-          "enabled": {
-            "type": "boolean"
-          },
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "attributes": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          },
-          "email": {
-            "type": "string"
-          },
-          "provider": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
       "CreatePostResponse": {
         "type": "object",
         "description": "게시글 생성 및 수정 응답 데이터",
@@ -5182,20 +5557,6 @@
             "type": "boolean",
             "description": "커뮤니티 동시 등록 여부",
             "example": true
-          }
-        }
-      },
-      "RsDataObject": {
-        "type": "object",
-        "properties": {
-          "resultCode": {
-            "type": "string"
-          },
-          "msg": {
-            "type": "string"
-          },
-          "data": {
-            "type": "object"
           }
         }
       },
@@ -6448,113 +6809,6 @@
         "required": [
           "categoryIds"
         ]
-      },
-      "CreateRouteRequest": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "duration": {
-            "type": "string"
-          },
-          "transportation": {
-            "type": "string",
-            "enum": [
-              "WALK",
-              "CAR",
-              "PUBLIC_TRANSPORTATION",
-              "BICYCLE"
-            ]
-          },
-          "estimatedBudget": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "introduction": {
-            "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ItemRequest"
-            }
-          },
-          "themes": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "MOUNTAIN",
-                "SEA",
-                "FOREST",
-                "CULTURE",
-                "HISTORY",
-                "ART",
-                "HEALING",
-                "CAFE",
-                "FOOD",
-                "NIGHT"
-              ]
-            }
-          },
-          "tagNames": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "ItemRequest": {
-        "type": "object",
-        "properties": {
-          "placeName": {
-            "type": "string"
-          },
-          "zipNo": {
-            "type": "string"
-          },
-          "roadAddr": {
-            "type": "string"
-          },
-          "detailAddr": {
-            "type": "string"
-          },
-          "latitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "longitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "sequence": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "visitTime": {
-            "type": "string"
-          },
-          "transportMethod": {
-            "type": "string",
-            "enum": [
-              "WALK",
-              "CAR",
-              "PUBLIC_TRANSPORTATION",
-              "BICYCLE"
-            ]
-          },
-          "transportMemo": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "tip": {
-            "type": "string"
-          }
-        }
       },
       "RsData": {
         "type": "object",
@@ -7825,6 +8079,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "authorId": {
+            "type": "integer",
+            "format": "int64"
+          },
           "title": {
             "type": "string"
           },
@@ -7848,6 +8106,18 @@
             "type": "string"
           },
           "userProfileUrl": {
+            "type": "string"
+          },
+          "targetCompanion": {
+            "type": "string"
+          },
+          "targetPriority": {
+            "type": "string"
+          },
+          "targetStay": {
+            "type": "string"
+          },
+          "targetType": {
             "type": "string"
           },
           "items": {
@@ -7922,6 +8192,31 @@
           },
           "data": {
             "$ref": "#/components/schemas/RouteDetailResponse"
+          }
+        }
+      },
+      "RecommendationResponse": {
+        "type": "object",
+        "properties": {
+          "routes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteListResponse"
+            }
+          }
+        }
+      },
+      "RsDataRecommendationResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RecommendationResponse"
           }
         }
       },
