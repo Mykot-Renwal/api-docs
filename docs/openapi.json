@@ -6395,7 +6395,8 @@
             "enum": [
               "ADMIN",
               "USER",
-              "SUPPORTER"
+              "SUPPORTER",
+              "GUEST"
             ],
             "example": "USER"
           },
@@ -7429,7 +7430,8 @@
               "enum": [
                 "ADMIN",
                 "USER",
-                "SUPPORTER"
+                "SUPPORTER",
+                "GUEST"
               ]
             },
             "uniqueItems": true
