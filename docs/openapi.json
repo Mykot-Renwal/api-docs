@@ -3920,8 +3920,18 @@
         "tags": [
           "마이콧 관광정보"
         ],
+        "summary": "관광공사 사진 조회",
+        "description": "등록된 관광공사 사진 목록을 조회합니다.",
         "operationId": "getPhotos",
         "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "page",
             "in": "query",
@@ -3945,28 +3955,6 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/RsDataPagedModelTourPhotoResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/tour/main": {
-      "get": {
-        "tags": [
-          "마이콧 관광정보"
-        ],
-        "summary": "관광공사 사진 조회",
-        "description": "등록된 관광공사 사진 목록을 조회합니다.",
-        "operationId": "getMainTourEvents",
-        "responses": {
-          "200": {
             "description": "조회 성공",
             "content": {
               "*/*": {
@@ -3981,7 +3969,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsDataListTourPhotoResponse"
+                  "$ref": "#/components/schemas/RsDataPagedModelTourPhotoResponse"
                 }
               }
             }
@@ -7792,23 +7780,6 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
-          }
-        }
-      },
-      "RsDataListTourPhotoResponse": {
-        "type": "object",
-        "properties": {
-          "resultCode": {
-            "type": "string"
-          },
-          "msg": {
-            "type": "string"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TourPhotoResponse"
             }
           }
         }
