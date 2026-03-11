@@ -110,6 +110,14 @@
               "format": "int64"
             },
             "example": 1
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
           }
         ],
         "responses": {
@@ -2177,6 +2185,14 @@
                 "NIGHT"
               ]
             }
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
           }
         ],
         "responses": {
@@ -2277,6 +2293,46 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/routes/{id}/like": {
+      "post": {
+        "tags": [
+          "마이콧 로컬루트"
+        ],
+        "summary": "로컬 루트 좋아요(추천) 토글",
+        "operationId": "toggleLike",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataMapStringObject"
                 }
               }
             }
@@ -2441,7 +2497,7 @@
         ],
         "summary": "게시글 좋아요 토글",
         "description": "특정 게시글에 대한 좋아요를 추가하거나 취소합니다. 이미 좋아요가 있는 경우 취소하고, 없는 경우 추가합니다.",
-        "operationId": "toggleLike",
+        "operationId": "toggleLike_1",
         "parameters": [
           {
             "name": "postId",
@@ -4099,85 +4155,22 @@
         }
       }
     },
-    "/api/v1/routes/recommend": {
+    "/api/v1/routes/{routeId}/reviews": {
       "get": {
         "tags": [
           "마이콧 로컬루트"
         ],
-        "summary": "추천 로컬 루트 조회",
-        "description": "조건에 맞는 루트를 추천합니다.",
-        "operationId": "getRecommendedRoutes",
+        "summary": "루트별 리뷰 조회",
+        "description": "특정 루트에 작성된 리뷰 목록을 가져옵니다.",
+        "operationId": "getRouteReviews",
         "parameters": [
           {
-            "name": "companion",
-            "in": "query",
-            "required": false,
+            "name": "routeId",
+            "in": "path",
+            "required": true,
             "schema": {
-              "type": "string",
-              "enum": [
-                "SOLO",
-                "COUPLE",
-                "FAMILY",
-                "FRIENDS"
-              ]
-            }
-          },
-          {
-            "name": "stay",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "SHORT",
-                "MID",
-                "LONG",
-                "HALF",
-                "FULL"
-              ]
-            }
-          },
-          {
-            "name": "priority",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "PHOTO",
-                "LOCAL",
-                "RELAX",
-                "EASY",
-                "TIME",
-                "LANG"
-              ]
-            }
-          },
-          {
-            "name": "travelType",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "FIRST",
-                "REPEAT"
-              ]
-            }
-          },
-          {
-            "name": "transportation",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "WALK",
-                "CAR",
-                "PUBLIC_TRANSPORTATION",
-                "BICYCLE",
-                "ALL"
-              ]
+              "type": "integer",
+              "format": "int64"
             }
           }
         ],
@@ -4187,7 +4180,38 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsDataRecommendationResponse"
+                  "$ref": "#/components/schemas/RsDataListPostSummaryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/routes/recommend": {
+      "get": {
+        "tags": [
+          "마이콧 로컬루트"
+        ],
+        "summary": "메인 홈 화면 좋아요 순 목록 (TOP 10)",
+        "operationId": "getRecommendedRoutes",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListRouteListResponse"
                 }
               }
             }
@@ -5335,43 +5359,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "targetCompanion": {
-            "type": "string",
-            "enum": [
-              "SOLO",
-              "COUPLE",
-              "FAMILY",
-              "FRIENDS"
-            ]
-          },
-          "targetStay": {
-            "type": "string",
-            "enum": [
-              "SHORT",
-              "MID",
-              "LONG",
-              "HALF",
-              "FULL"
-            ]
-          },
-          "targetPriority": {
-            "type": "string",
-            "enum": [
-              "PHOTO",
-              "LOCAL",
-              "RELAX",
-              "EASY",
-              "TIME",
-              "LANG"
-            ]
-          },
-          "targetType": {
-            "type": "string",
-            "enum": [
-              "FIRST",
-              "REPEAT"
-            ]
           }
         }
       },
@@ -5421,6 +5408,9 @@
             "type": "string"
           },
           "tip": {
+            "type": "string"
+          },
+          "linkUrl": {
             "type": "string"
           }
         }
@@ -5566,6 +5556,11 @@
               "type": "string"
             }
           },
+          "routeId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "연관 루트 ID"
+          },
           "shared": {
             "type": "boolean"
           },
@@ -5630,6 +5625,12 @@
             "items": {
               "type": "string"
             }
+          },
+          "routeId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "로컬 루트 ID",
+            "example": 10
           },
           "shared": {
             "type": "boolean"
@@ -6912,6 +6913,23 @@
           }
         }
       },
+      "RsDataMapStringObject": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
       "RsDataCreatePostResponse": {
         "type": "object",
         "properties": {
@@ -8129,6 +8147,25 @@
             "items": {
               "type": "string"
             }
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double",
+            "description": "평균 별점"
+          },
+          "reviewCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "리뷰 개수"
+          },
+          "likeCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "좋아요 개수"
+          },
+          "isLiked": {
+            "type": "boolean",
+            "description": "현재 사용자 좋아요 여부"
           }
         }
       },
@@ -8146,195 +8183,6 @@
             "items": {
               "$ref": "#/components/schemas/RouteListResponse"
             }
-          }
-        }
-      },
-      "RouteDetailResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "authorId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "title": {
-            "type": "string"
-          },
-          "coverImagePath": {
-            "type": "string"
-          },
-          "duration": {
-            "type": "string"
-          },
-          "transportation": {
-            "type": "string"
-          },
-          "estimatedBudget": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "introduction": {
-            "type": "string"
-          },
-          "authorName": {
-            "type": "string"
-          },
-          "userProfileUrl": {
-            "type": "string"
-          },
-          "targetCompanion": {
-            "type": "string"
-          },
-          "targetPriority": {
-            "type": "string"
-          },
-          "targetStay": {
-            "type": "string"
-          },
-          "targetType": {
-            "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RouteItemResponse"
-            }
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "RouteItemResponse": {
-        "type": "object",
-        "properties": {
-          "placeName": {
-            "type": "string"
-          },
-          "roadAddr": {
-            "type": "string"
-          },
-          "detailAddr": {
-            "type": "string"
-          },
-          "latitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "longitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "sequence": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "visitTime": {
-            "type": "string"
-          },
-          "transportMethod": {
-            "type": "string"
-          },
-          "transportMemo": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "tip": {
-            "type": "string"
-          },
-          "itemImages": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "RsDataRouteDetailResponse": {
-        "type": "object",
-        "properties": {
-          "resultCode": {
-            "type": "string"
-          },
-          "msg": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/RouteDetailResponse"
-          }
-        }
-      },
-      "RecommendationResponse": {
-        "type": "object",
-        "properties": {
-          "routes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RouteListResponse"
-            }
-          }
-        }
-      },
-      "RsDataRecommendationResponse": {
-        "type": "object",
-        "properties": {
-          "resultCode": {
-            "type": "string"
-          },
-          "msg": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/RecommendationResponse"
-          }
-        }
-      },
-      "PostPageResponse": {
-        "type": "object",
-        "description": "게시글 목록 페이징 응답 데이터",
-        "properties": {
-          "posts": {
-            "type": "array",
-            "description": "게시글 요약 정보 목록",
-            "items": {
-              "$ref": "#/components/schemas/PostSummaryResponse"
-            }
-          },
-          "currentPage": {
-            "type": "integer",
-            "format": "int32",
-            "description": "현재 페이지 번호 (1부터 시작)",
-            "example": 1
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32",
-            "description": "전체 페이지 수",
-            "example": 10
-          },
-          "totalElements": {
-            "type": "integer",
-            "format": "int64",
-            "description": "전체 게시글 개수",
-            "example": 95
-          },
-          "isFirst": {
-            "type": "boolean",
-            "description": "첫 페이지 여부",
-            "example": true
-          },
-          "isLast": {
-            "type": "boolean",
-            "description": "마지막 페이지 여부",
-            "example": false
           }
         }
       },
@@ -8448,13 +8296,19 @@
               "type": "string"
             }
           },
+          "routeId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "리뷰 대상 루트 고유 식별자(ID)",
+            "example": 10
+          },
           "bookmarked": {
             "type": "boolean"
           },
-          "shared": {
+          "liked": {
             "type": "boolean"
           },
-          "liked": {
+          "shared": {
             "type": "boolean"
           },
           "isBookmarked": {
@@ -8474,23 +8328,6 @@
           }
         }
       },
-      "RsDataListPostCommentSummaryResponse": {
-        "type": "object",
-        "properties": {
-          "resultCode": {
-            "type": "string"
-          },
-          "msg": {
-            "type": "string"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PostCommentSummaryResponse"
-            }
-          }
-        }
-      },
       "RsDataListPostSummaryResponse": {
         "type": "object",
         "properties": {
@@ -8504,6 +8341,193 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PostSummaryResponse"
+            }
+          }
+        }
+      },
+      "RouteDetailResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "authorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "coverImagePath": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "string"
+          },
+          "transportation": {
+            "type": "string"
+          },
+          "estimatedBudget": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "introduction": {
+            "type": "string"
+          },
+          "authorName": {
+            "type": "string"
+          },
+          "userProfileUrl": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteItemResponse"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double"
+          },
+          "reviewCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "likeCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isLiked": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RouteItemResponse": {
+        "type": "object",
+        "properties": {
+          "placeName": {
+            "type": "string"
+          },
+          "roadAddr": {
+            "type": "string"
+          },
+          "detailAddr": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "sequence": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "visitTime": {
+            "type": "string"
+          },
+          "transportMethod": {
+            "type": "string"
+          },
+          "transportMemo": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "tip": {
+            "type": "string"
+          },
+          "itemImages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "linkUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "RsDataRouteDetailResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RouteDetailResponse"
+          }
+        }
+      },
+      "PostPageResponse": {
+        "type": "object",
+        "description": "게시글 목록 페이징 응답 데이터",
+        "properties": {
+          "posts": {
+            "type": "array",
+            "description": "게시글 요약 정보 목록",
+            "items": {
+              "$ref": "#/components/schemas/PostSummaryResponse"
+            }
+          },
+          "currentPage": {
+            "type": "integer",
+            "format": "int32",
+            "description": "현재 페이지 번호 (1부터 시작)",
+            "example": 1
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "전체 페이지 수",
+            "example": 10
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64",
+            "description": "전체 게시글 개수",
+            "example": 95
+          },
+          "isFirst": {
+            "type": "boolean",
+            "description": "첫 페이지 여부",
+            "example": true
+          },
+          "isLast": {
+            "type": "boolean",
+            "description": "마지막 페이지 여부",
+            "example": false
+          }
+        }
+      },
+      "RsDataListPostCommentSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostCommentSummaryResponse"
             }
           }
         }
@@ -8626,15 +8650,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -8684,10 +8708,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
           "empty": {
