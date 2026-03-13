@@ -4817,23 +4817,21 @@
           "파일"
         ],
         "summary": "프로필 이미지 조회",
-        "description": "사용자 프로필 이미지를 조회합니다. account_id를 파일명으로 사용합니다.",
+        "description": "사용자 프로필 이미지를 조회합니다.",
         "operationId": "getProfileImage",
         "parameters": [
           {
             "name": "filename",
             "in": "path",
-            "description": "파일명 (account_id.확장자)",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "user123.jpg"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "프로필 이미지 조회 성공",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -4842,9 +4840,47 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/files/user/profile/{year}/{month}/{filename}": {
+      "get": {
+        "tags": [
+          "파일"
+        ],
+        "summary": "프로필 이미지 조회",
+        "description": "사용자 프로필 이미지를 조회합니다.",
+        "operationId": "getProfileImage_1",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           },
-          "404": {
-            "description": "파일을 찾을 수 없음",
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -4853,9 +4889,80 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/files/popup/{year}/{month}/{filename}": {
+      "get": {
+        "tags": [
+          "파일"
+        ],
+        "summary": "팝업 이미지 조회",
+        "description": "등록된 팝업 이미지를 조회합니다.",
+        "operationId": "getPopupImage",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           },
-          "400": {
-            "description": "잘못된 파일 경로 또는 파일명",
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/files/popup/{filename}": {
+      "get": {
+        "tags": [
+          "파일"
+        ],
+        "summary": "팝업 이미지 조회",
+        "description": "등록된 팝업 이미지를 조회합니다.",
+        "operationId": "getPopupImage_1",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -8880,9 +8987,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "unpaged": {
-            "type": "boolean"
-          },
           "paged": {
             "type": "boolean"
           },
@@ -8893,6 +8997,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
