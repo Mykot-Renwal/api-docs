@@ -1330,6 +1330,87 @@
         }
       }
     },
+    "/api/v1/admin/popups/{id}": {
+      "put": {
+        "tags": [
+          "admin-popup-controller"
+        ],
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "request": {
+                    "$ref": "#/components/schemas/PopupRequest"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "request"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataPopupResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "admin-popup-controller"
+        ],
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/partner/{partnerId}": {
       "get": {
         "tags": [
@@ -3438,6 +3519,66 @@
         }
       }
     },
+    "/api/v1/admin/popups": {
+      "get": {
+        "tags": [
+          "admin-popup-controller"
+        ],
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListPopupResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-popup-controller"
+        ],
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "request": {
+                    "$ref": "#/components/schemas/PopupRequest"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "image",
+                  "request"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataPopupResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/data/fetch-stay": {
       "post": {
         "tags": [
@@ -4501,6 +4642,26 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/RsDataPageMyCommentResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/popups/active": {
+      "get": {
+        "tags": [
+          "popup-controller"
+        ],
+        "operationId": "getActive",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListPopupResponse"
                 }
               }
             }
@@ -6480,6 +6641,63 @@
             "type": "string",
             "description": "사용 언어 (KOREAN, ENGLISH 등)",
             "example": "KOREAN"
+          }
+        }
+      },
+      "PopupRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "linkUrl": {
+            "type": "string"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PopupResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "linkUrl": {
+            "type": "string"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RsDataPopupResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PopupResponse"
           }
         }
       },
@@ -8710,6 +8928,23 @@
           },
           "empty": {
             "type": "boolean"
+          }
+        }
+      },
+      "RsDataListPopupResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PopupResponse"
+            }
           }
         }
       },
