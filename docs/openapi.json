@@ -3579,111 +3579,12 @@
         }
       }
     },
-    "/api/v1/admin/data/fetch-stay": {
-      "post": {
-        "tags": [
-          "admin-data-controller"
-        ],
-        "operationId": "fetchStayData",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/admin/data/fetch-shopping": {
-      "post": {
-        "tags": [
-          "admin-data-controller"
-        ],
-        "operationId": "fetchShoppingData",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/admin/data/fetch-food": {
+    "/api/v1/admin/data/fetch": {
       "post": {
         "tags": [
           "admin-data-controller"
         ],
         "operationId": "fetchFoodData",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/admin/data/fetch-beauty": {
-      "post": {
-        "tags": [
-          "admin-data-controller"
-        ],
-        "operationId": "fetchBeautyData",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4095,6 +3996,14 @@
               "type": "integer",
               "format": "int32",
               "default": 10
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
