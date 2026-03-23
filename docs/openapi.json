@@ -4302,6 +4302,38 @@
         }
       }
     },
+    "/api/v1/routes/my-list": {
+      "get": {
+        "tags": [
+          "마이콧 로컬루트"
+        ],
+        "summary": "내 루트 목록 조회",
+        "description": "로그인한 사용자가 작성한 루트 목록을 가져옵니다.",
+        "operationId": "getMyRoutes",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListRouteListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/post/{postId}/comment/top3": {
       "get": {
         "tags": [
@@ -8940,15 +8972,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -8958,9 +8990,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "unpaged": {
-            "type": "boolean"
-          },
           "paged": {
             "type": "boolean"
           },
@@ -8971,6 +9000,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
@@ -8998,10 +9030,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
           "empty": {
