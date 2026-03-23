@@ -4676,6 +4676,58 @@
         }
       }
     },
+    "/api/v1/friends/nearby": {
+      "get": {
+        "tags": [
+          "마이콧 프랜즈"
+        ],
+        "summary": "주변 프랜즈 매장 조회",
+        "description": "현재 위치 좌표를 기반으로 지정된 반경 내의 매장을 조회합니다.",
+        "operationId": "getNearbyFriends",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "lng",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "radius",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "default": 5.0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListBenefitPartnerDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/friends/my-list": {
       "get": {
         "tags": [
@@ -6334,6 +6386,14 @@
               "type": "integer",
               "format": "int64"
             }
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
           }
         }
       },
@@ -7463,6 +7523,14 @@
             "items": {
               "$ref": "#/components/schemas/MenuRequest"
             }
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -8729,6 +8797,10 @@
           },
           "isLiked": {
             "type": "boolean"
+          },
+          "supporterId": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -9030,10 +9102,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
           "empty": {
@@ -9099,6 +9171,23 @@
           },
           "location": {
             "type": "string"
+          }
+        }
+      },
+      "RsDataListBenefitPartnerDetailResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BenefitPartnerDetailResponse"
+            }
           }
         }
       },
