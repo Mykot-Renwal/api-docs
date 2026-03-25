@@ -4676,6 +4676,28 @@
         }
       }
     },
+    "/api/v1/friends/recommendations": {
+      "get": {
+        "tags": [
+          "마이콧 프랜즈"
+        ],
+        "summary": "카테고리별 추천 프랜즈 조회",
+        "description": "메인 페이지용으로 각 카테고리(FOOD, SHOPPING, BEAUTY, STAY)별 평점이 가장 높은 매장을 1개씩 총 4개 조회합니다.",
+        "operationId": "getTopRatedPerCategory",
+        "responses": {
+          "200": {
+            "description": "추천 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BenefitPartnerDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/friends/nearby": {
       "get": {
         "tags": [
@@ -7124,20 +7146,10 @@
             "description": "대학교명 (대학생 전용)",
             "example": "한국대학교"
           },
-          "major": {
-            "type": "string",
-            "description": "전공 (대학생 전용)",
-            "example": "컴퓨터공학과"
-          },
           "jobTitle": {
             "type": "string",
             "description": "직업/전문분야 (전문가 전용)",
             "example": "전문 통역사"
-          },
-          "licenseName": {
-            "type": "string",
-            "description": "자격증 명칭 (전문가 전용)",
-            "example": "관광통역안내사"
           },
           "serviceRate": {
             "type": "integer",
@@ -7252,11 +7264,15 @@
               "type": "string"
             }
           },
-          "guidingDuration": {
+          "sns": {
             "type": "string",
-            "description": "가이드 가능 기간 (TWO_THREE_DAYS, FOUR_FIVE_DAYS, SIX_DAYS_PLUS)",
-            "example": "TWO_THREE_DAYS",
-            "minLength": 1
+            "description": "sns 링크",
+            "example": "instagram.com"
+          },
+          "location": {
+            "type": "string",
+            "description": "주 활동지역",
+            "example": "해운대구"
           }
         },
         "required": [
@@ -8408,6 +8424,18 @@
           }
         }
       },
+      "RouteDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
       "RsDataSupporterResponse": {
         "type": "object",
         "properties": {
@@ -8595,11 +8623,6 @@
               "type": "string"
             }
           },
-          "guidingDuration": {
-            "type": "string",
-            "description": "가이드 가능 기간",
-            "example": "2~3일"
-          },
           "averageRating": {
             "type": "number",
             "format": "double",
@@ -8611,6 +8634,23 @@
             "format": "int64",
             "description": "리뷰 개수",
             "example": 2
+          },
+          "sns": {
+            "type": "string",
+            "description": "sns 링크",
+            "example": "instagram.com"
+          },
+          "location": {
+            "type": "string",
+            "description": "주 활동지역",
+            "example": "해운대구"
+          },
+          "routes": {
+            "type": "array",
+            "description": "메이트가 작성한 추천 루트 목록",
+            "items": {
+              "$ref": "#/components/schemas/RouteDto"
+            }
           }
         }
       },
@@ -9044,15 +9084,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -9102,10 +9142,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
           "empty": {
