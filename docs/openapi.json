@@ -2470,7 +2470,8 @@
                 "UNDEFINED",
                 "QNA",
                 "DAILY",
-                "REVIEW"
+                "REVIEW",
+                "NOTICE"
               ]
             }
           },
@@ -3838,6 +3839,47 @@
         }
       }
     },
+    "/api/v1/admin/partner/{partnerId}/promoted": {
+      "patch": {
+        "tags": [
+          "관리자 - 베네핏 파트너 관리"
+        ],
+        "summary": "매장 홍보 상태 변경",
+        "description": "관리자가 특정 매장을 커뮤니티 배너 홍보 대상으로 설정하거나 해제합니다.",
+        "operationId": "changePromotedStatus",
+        "parameters": [
+          {
+            "name": "partnerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "isPromoted",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users/me/stats": {
       "get": {
         "tags": [
@@ -4401,6 +4443,72 @@
         }
       }
     },
+    "/api/v1/post/notice/latest": {
+      "get": {
+        "tags": [
+          "게시글"
+        ],
+        "summary": "최신 공지사항 조회",
+        "description": "카테고리가 NOTICE인 게시글 중 가장 최근의 1개를 조회합니다.",
+        "operationId": "getLatestNotice",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataPostSummaryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/post/monthly-best": {
+      "get": {
+        "tags": [
+          "게시글"
+        ],
+        "summary": "이달의 베스트 조회",
+        "description": "이번 달 작성된 리뷰의 별점을 기준으로 상위 3개의 매장, 루트 또는 메이트를 조회합니다.",
+        "operationId": "getMonthlyBest",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "조회 타입 (PARTNER, ROUTE, MATE)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "PARTNER"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "베스트 항목 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListBestItemResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 타입 파라미터",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListBestItemResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/post/me": {
       "get": {
         "tags": [
@@ -4550,6 +4658,26 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/RsDataPostPageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/post/friends/promoted/latest": {
+      "get": {
+        "tags": [
+          "게시글"
+        ],
+        "operationId": "getPromotedPartner",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataBenefitPartnerDetailResponse"
                 }
               }
             }
@@ -5812,7 +5940,8 @@
               "UNDEFINED",
               "QNA",
               "DAILY",
-              "REVIEW"
+              "REVIEW",
+              "NOTICE"
             ],
             "example": "REVIEW"
           },
@@ -5875,6 +6004,10 @@
             "type": "integer",
             "format": "int64",
             "description": "연관 메이트 ID"
+          },
+          "tags": {
+            "type": "string",
+            "description": "태그"
           },
           "shared": {
             "type": "boolean"
@@ -5952,6 +6085,11 @@
             "format": "int64",
             "description": "로컬 메이트 ID",
             "example": 10
+          },
+          "tags": {
+            "type": "string",
+            "description": "태그",
+            "example": "맛집정보"
           },
           "shared": {
             "type": "boolean"
@@ -6416,6 +6554,9 @@
           "longitude": {
             "type": "number",
             "format": "double"
+          },
+          "promoted": {
+            "type": "boolean"
           }
         }
       },
@@ -6546,6 +6687,9 @@
             "items": {
               "$ref": "#/components/schemas/KeywordStatResponse"
             }
+          },
+          "promoted": {
+            "type": "boolean"
           },
           "is_official": {
             "type": "boolean",
@@ -8273,7 +8417,8 @@
               "UNDEFINED",
               "QNA",
               "DAILY",
-              "REVIEW"
+              "REVIEW",
+              "NOTICE"
             ],
             "example": "REVIEW"
           },
@@ -8345,6 +8490,14 @@
             "format": "int64",
             "description": "리뷰 대상 메이트 고유 식별자(ID)",
             "example": 10
+          },
+          "tags": {
+            "type": "array",
+            "description": "태그",
+            "example": "맛집정보",
+            "items": {
+              "type": "string"
+            }
           },
           "bookmarked": {
             "type": "boolean"
@@ -8966,6 +9119,60 @@
           }
         }
       },
+      "RsDataPostSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PostSummaryResponse"
+          }
+        }
+      },
+      "BestItemResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double"
+          },
+          "reviewCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "RsDataListBestItemResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BestItemResponse"
+            }
+          }
+        }
+      },
       "RsDataPostPageResponse": {
         "type": "object",
         "properties": {
@@ -9016,6 +9223,20 @@
           },
           "data": {
             "$ref": "#/components/schemas/MyBookmarkResponse"
+          }
+        }
+      },
+      "RsDataBenefitPartnerDetailResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/BenefitPartnerDetailResponse"
           }
         }
       },
@@ -9102,6 +9323,9 @@
       "PageableObject": {
         "type": "object",
         "properties": {
+          "unpaged": {
+            "type": "boolean"
+          },
           "paged": {
             "type": "boolean"
           },
@@ -9112,9 +9336,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "unpaged": {
-            "type": "boolean"
           },
           "offset": {
             "type": "integer",
