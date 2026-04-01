@@ -5797,6 +5797,13 @@
             "items": {
               "type": "string"
             }
+          },
+          "registrationType": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "EVENT"
+            ]
           }
         }
       },
@@ -8994,6 +9001,13 @@
           "supporterId": {
             "type": "integer",
             "format": "int64"
+          },
+          "registrationType": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "EVENT"
+            ]
           }
         }
       },
@@ -9305,15 +9319,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -9323,9 +9337,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "unpaged": {
-            "type": "boolean"
-          },
           "paged": {
             "type": "boolean"
           },
@@ -9336,6 +9347,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
