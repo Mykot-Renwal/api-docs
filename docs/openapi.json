@@ -6695,6 +6695,14 @@
               "$ref": "#/components/schemas/KeywordStatResponse"
             }
           },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
           "promoted": {
             "type": "boolean"
           },
