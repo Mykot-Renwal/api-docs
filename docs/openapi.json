@@ -8838,6 +8838,12 @@
             "description": "지원서 고유 ID",
             "example": 1
           },
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "작성자 유저 고유 ID",
+            "example": 8
+          },
           "partnerType": {
             "type": "string",
             "description": "파트너 유형",
