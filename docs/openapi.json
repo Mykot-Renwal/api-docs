@@ -1928,6 +1928,26 @@
         }
       }
     },
+    "/payment/return": {
+      "post": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "paymentReturn",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users/signup": {
       "post": {
         "tags": [
@@ -4368,6 +4388,41 @@
         }
       }
     },
+    "/api/v1/supporters/master-licenses": {
+      "get": {
+        "tags": [
+          "서포터즈 API"
+        ],
+        "summary": "자격증 목록 조회",
+        "description": "자격증 목록을 조회합니다.",
+        "operationId": "getMasterLicenses",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LicenseMasterDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/supporters/categories": {
       "get": {
         "tags": [
@@ -6556,6 +6611,9 @@
             "description": "새로운 메뉴 사진 첨부 여부",
             "example": true
           },
+          "photoDeleted": {
+            "type": "boolean"
+          },
           "halal": {
             "type": "boolean"
           },
@@ -6563,9 +6621,6 @@
             "type": "boolean"
           },
           "main": {
-            "type": "boolean"
-          },
-          "photoDeleted": {
             "type": "boolean"
           },
           "isHalal": {
@@ -7429,6 +7484,36 @@
           }
         }
       },
+      "CertificationDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "구분 (LICENSE, LANGUAGE)",
+            "example": "LICENSE"
+          },
+          "name": {
+            "type": "string",
+            "description": "명칭",
+            "example": "관광통역안내사"
+          },
+          "score": {
+            "type": "string",
+            "description": "점수/급수",
+            "example": "합격"
+          },
+          "date": {
+            "type": "string",
+            "description": "취득일자",
+            "example": "2024-04"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "발급기관",
+            "example": "한국산업인력공단"
+          }
+        }
+      },
       "LanguageDto": {
         "type": "object",
         "properties": {
@@ -7598,6 +7683,13 @@
             "type": "string",
             "description": "주 활동지역",
             "example": "해운대구"
+          },
+          "certifications": {
+            "type": "array",
+            "description": "자격증 및 어학시험 목록",
+            "items": {
+              "$ref": "#/components/schemas/CertificationDto"
+            }
           }
         },
         "required": [
@@ -8802,6 +8894,31 @@
           }
         }
       },
+      "CertificationResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "구분 (LICENSE, LANGUAGE)"
+          },
+          "name": {
+            "type": "string",
+            "description": "명칭"
+          },
+          "score": {
+            "type": "string",
+            "description": "점수/급수"
+          },
+          "date": {
+            "type": "string",
+            "description": "취득일자"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "발급기관"
+          }
+        }
+      },
       "RouteDto": {
         "type": "object",
         "properties": {
@@ -9035,6 +9152,13 @@
             "items": {
               "$ref": "#/components/schemas/RouteDto"
             }
+          },
+          "certifications": {
+            "type": "array",
+            "description": "자격증 및 어학시험 목록",
+            "items": {
+              "$ref": "#/components/schemas/CertificationResponse"
+            }
           }
         }
       },
@@ -9052,6 +9176,26 @@
             "items": {
               "$ref": "#/components/schemas/SupporterResponse"
             }
+          }
+        }
+      },
+      "LicenseMasterDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "자격증/시험 명칭",
+            "example": "관광통역안내사"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "발급 기관",
+            "example": "한국산업인력공단"
+          },
+          "type": {
+            "type": "string",
+            "description": "구분 (LICENSE, LANGUAGE)",
+            "example": "LICENSE"
           }
         }
       },
@@ -9543,15 +9687,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -9561,6 +9705,9 @@
       "PageableObject": {
         "type": "object",
         "properties": {
+          "unpaged": {
+            "type": "boolean"
+          },
           "paged": {
             "type": "boolean"
           },
@@ -9571,9 +9718,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "unpaged": {
-            "type": "boolean"
           },
           "offset": {
             "type": "integer",
