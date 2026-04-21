@@ -1928,26 +1928,6 @@
         }
       }
     },
-    "/payment/return": {
-      "post": {
-        "tags": [
-          "payment-controller"
-        ],
-        "operationId": "paymentReturn",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/users/signup": {
       "post": {
         "tags": [
@@ -4929,6 +4909,87 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/RsDataListPopupResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/generate-url": {
+      "get": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "generatePaymentUrl",
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "hours",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "mateId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "buyerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/close": {
+      "get": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "paymentClose",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
