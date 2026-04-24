@@ -2168,6 +2168,70 @@
         }
       }
     },
+    "/api/v1/supporters/license/auth-request": {
+      "post": {
+        "tags": [
+          "서포터즈 API"
+        ],
+        "summary": "국가기술자격증 간편인증 요청",
+        "description": "자격증 조회를 위해 간편인증 푸시를 발송합니다.",
+        "operationId": "requestLicenseAuth",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertAuthRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/supporters/license/auth-confirm": {
+      "post": {
+        "tags": [
+          "서포터즈 API"
+        ],
+        "summary": "국가기술자격증 최종 조회",
+        "description": "인증 완료 후 실제 자격증 목록을 가져옵니다.",
+        "operationId": "confirmLicenseAuth",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertFinalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListMapStringString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/supporters/apply": {
       "post": {
         "tags": [
@@ -6672,6 +6736,9 @@
             "description": "새로운 메뉴 사진 첨부 여부",
             "example": true
           },
+          "photoDeleted": {
+            "type": "boolean"
+          },
           "halal": {
             "type": "boolean"
           },
@@ -6679,9 +6746,6 @@
             "type": "boolean"
           },
           "main": {
-            "type": "boolean"
-          },
-          "photoDeleted": {
             "type": "boolean"
           },
           "isHalal": {
@@ -7545,6 +7609,63 @@
           }
         }
       },
+      "CertAuthRequest": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "phoneNo": {
+            "type": "string"
+          },
+          "identity": {
+            "type": "string"
+          },
+          "telecom": {
+            "type": "string"
+          },
+          "loginTypeLevel": {
+            "type": "string"
+          }
+        }
+      },
+      "CertFinalRequest": {
+        "type": "object",
+        "properties": {
+          "simpleAuth": {
+            "type": "string"
+          },
+          "twoWayInfo": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "is2Way": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RsDataListMapStringString": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
       "CertificationDto": {
         "type": "object",
         "properties": {
@@ -7566,12 +7687,17 @@
           "date": {
             "type": "string",
             "description": "취득일자",
-            "example": "2024-04"
+            "example": "2026-04"
           },
           "issuer": {
             "type": "string",
             "description": "발급기관",
             "example": "한국산업인력공단"
+          },
+          "certNo": {
+            "type": "string",
+            "description": "자격증번호",
+            "example": "20-40-123456"
           }
         }
       },
@@ -7587,6 +7713,36 @@
             "type": "string",
             "description": "숙련도 레벨",
             "example": "원어민 수준"
+          }
+        }
+      },
+      "ScheduleDto": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "string",
+            "description": "요일 (MON, TUE, WED, THU, FRI, SAT, SUN)",
+            "example": "MON"
+          },
+          "sessions": {
+            "type": "array",
+            "description": "활성화된 세션 (MORNING, AFTERNOON, NIGHT)",
+            "example": [
+              "AFTERNOON"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "startTime": {
+            "type": "string",
+            "description": "시작 시간",
+            "example": "09:00"
+          },
+          "endTime": {
+            "type": "string",
+            "description": "종료 시간",
+            "example": "18:00"
           }
         }
       },
@@ -7689,52 +7845,6 @@
             "description": "운전 가능 여부",
             "example": true
           },
-          "weekdayAvailable": {
-            "type": "boolean",
-            "description": "평일 활동 가능 여부",
-            "example": true
-          },
-          "weekdayStartTime": {
-            "type": "string",
-            "description": "평일 시작 시간",
-            "example": "09:00"
-          },
-          "weekdayEndTime": {
-            "type": "string",
-            "description": "평일 종료 시간",
-            "example": "18:00"
-          },
-          "weekendAvailable": {
-            "type": "boolean",
-            "description": "주말 활동 가능 여부",
-            "example": false
-          },
-          "weekendStartTime": {
-            "type": "string",
-            "description": "주말 시작 시간",
-            "example": "10:00"
-          },
-          "weekendEndTime": {
-            "type": "string",
-            "description": "주말 종료 시간",
-            "example": "22:00"
-          },
-          "weekdayDays": {
-            "type": "array",
-            "description": "평일 선택",
-            "example": "22:00",
-            "items": {
-              "type": "string"
-            }
-          },
-          "weekendDays": {
-            "type": "array",
-            "description": "주말 선택",
-            "example": "22:00",
-            "items": {
-              "type": "string"
-            }
-          },
           "sns": {
             "type": "string",
             "description": "sns 링크",
@@ -7750,6 +7860,13 @@
             "description": "자격증 및 어학시험 목록",
             "items": {
               "$ref": "#/components/schemas/CertificationDto"
+            }
+          },
+          "availableSchedules": {
+            "type": "array",
+            "description": "요일별 상세 활동 가능 시간 설정",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleDto"
             }
           }
         },
@@ -8977,6 +9094,11 @@
           "issuer": {
             "type": "string",
             "description": "발급기관"
+          },
+          "certNo": {
+            "type": "string",
+            "description": "자격증번호",
+            "example": "20-40-123456"
           }
         }
       },
@@ -9003,6 +9125,28 @@
           },
           "data": {
             "$ref": "#/components/schemas/SupporterResponse"
+          }
+        }
+      },
+      "ScheduleResponse": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "string"
+          },
+          "sessions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "startTime": {
+            "type": "string",
+            "example": "14:30:00"
+          },
+          "endTime": {
+            "type": "string",
+            "example": "14:30:00"
           }
         }
       },
@@ -9141,50 +9285,6 @@
             "type": "string",
             "description": "짧은 소개(상세)"
           },
-          "weekdayAvailable": {
-            "type": "boolean",
-            "description": "평일 활동 가능 여부"
-          },
-          "weekdayStartTime": {
-            "type": "string",
-            "description": "평일 시작 시간",
-            "example": "09:00"
-          },
-          "weekdayEndTime": {
-            "type": "string",
-            "description": "평일 종료 시간",
-            "example": "18:00"
-          },
-          "weekendAvailable": {
-            "type": "boolean",
-            "description": "주말 활동 가능 여부"
-          },
-          "weekendStartTime": {
-            "type": "string",
-            "description": "주말 시작 시간",
-            "example": "10:00"
-          },
-          "weekendEndTime": {
-            "type": "string",
-            "description": "주말 종료 시간",
-            "example": "22:00"
-          },
-          "weekdayDays": {
-            "type": "array",
-            "description": "평일 선택",
-            "example": "22:00",
-            "items": {
-              "type": "string"
-            }
-          },
-          "weekendDays": {
-            "type": "array",
-            "description": "주말 선택",
-            "example": "22:00",
-            "items": {
-              "type": "string"
-            }
-          },
           "averageRating": {
             "type": "number",
             "format": "double",
@@ -9219,6 +9319,13 @@
             "description": "자격증 및 어학시험 목록",
             "items": {
               "$ref": "#/components/schemas/CertificationResponse"
+            }
+          },
+          "availableSchedules": {
+            "type": "array",
+            "description": "요일별 활동 가능 시간 목록",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleResponse"
             }
           }
         }
@@ -9806,10 +9913,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
           "empty": {
