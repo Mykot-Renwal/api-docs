@@ -177,13 +177,6 @@
                     "type": "string",
                     "format": "binary"
                   },
-                  "itemImages": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
-                  },
                   "user": {
                     "$ref": "#/components/schemas/SecurityUser"
                   }
@@ -2386,13 +2379,6 @@
                   "coverImage": {
                     "type": "string",
                     "format": "binary"
-                  },
-                  "itemImages": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
                   },
                   "user": {
                     "$ref": "#/components/schemas/SecurityUser"
@@ -6156,6 +6142,10 @@
       "ItemRequest": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "placeName": {
             "type": "string"
           },
@@ -6203,6 +6193,12 @@
           },
           "linkUrl": {
             "type": "string"
+          },
+          "keepImageUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -9550,6 +9546,10 @@
       "RouteItemResponse": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "placeName": {
             "type": "string"
           },
@@ -9855,15 +9855,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
