@@ -3635,6 +3635,39 @@
         }
       }
     },
+    "/api/v1/admin/supporters/complete/{paymentId}": {
+      "post": {
+        "tags": [
+          "Admin - Supporter API"
+        ],
+        "summary": "정산완료",
+        "description": "정산후 상태를 변경합니다.",
+        "operationId": "completeSettlement",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/popups": {
       "get": {
         "tags": [
@@ -4966,6 +4999,26 @@
         }
       }
     },
+    "/api/v1/payment/history": {
+      "get": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "getMyPaymentHistory",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/payment/generate-url": {
       "get": {
         "tags": [
@@ -5754,6 +5807,28 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/RsDataSupporterResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/supporters/settlements": {
+      "get": {
+        "tags": [
+          "Admin - Supporter API"
+        ],
+        "summary": "전체 정산 내역 조회",
+        "description": "모든 메이트의 결제 및 정산 현황을 조회합니다.",
+        "operationId": "getAllSettlements",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListSettlementListDto"
                 }
               }
             }
@@ -9855,15 +9930,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -10044,6 +10119,74 @@
             "additionalProperties": {
               "type": "string"
             }
+          }
+        }
+      },
+      "RsDataListSettlementListDto": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SettlementListDto"
+            }
+          }
+        }
+      },
+      "SettlementListDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mateId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "buyerNickname": {
+            "type": "string"
+          },
+          "mateName": {
+            "type": "string"
+          },
+          "totalAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "settlementAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hours": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string"
+          },
+          "rateType": {
+            "type": "string"
+          },
+          "serviceDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "bankName": {
+            "type": "string"
+          },
+          "accountNumber": {
+            "type": "string"
           }
         }
       },
