@@ -22,6 +22,10 @@
       "description": "프랜즈 정보 관리 API"
     },
     {
+      "name": "통합 검색",
+      "description": "전체 서비스 통합 검색 API"
+    },
+    {
       "name": "유저 관리 API",
       "description": "회원가입, 로그인, 내 정보 관리 등 유저 관련 서비스를 제공합니다."
     },
@@ -4501,6 +4505,50 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/RsDataListCategoryDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search": {
+      "get": {
+        "tags": [
+          "통합 검색"
+        ],
+        "summary": "통합 검색 실행",
+        "description": "키워드를 입력받아 게시글, 루트, 서포터 등 서비스 내 모든 데이터를 검색합니다.",
+        "operationId": "search",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "검색어 (제목, 내용, 태그 포함)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "부산 맛집"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "검색 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 검색 요청",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListSearchResponse"
                 }
               }
             }
@@ -9435,6 +9483,9 @@
             "type": "string",
             "description": "구분 (LICENSE, LANGUAGE)",
             "example": "LICENSE"
+          },
+          "certNo": {
+            "type": "string"
           }
         }
       },
@@ -9451,6 +9502,60 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CategoryDto"
+            }
+          }
+        }
+      },
+      "SearchResponse": {
+        "type": "object",
+        "description": "통합 검색 결과 응답",
+        "properties": {
+          "domainType": {
+            "type": "string",
+            "description": "도메인 유형",
+            "example": "POST"
+          },
+          "domainId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "해당 도메인의 PK ID",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "description": "검색 결과 제목",
+            "example": "부산 해운대 맛집 탐방"
+          },
+          "content": {
+            "type": "string",
+            "description": "검색 결과 본문",
+            "example": "여기는 정말 맛있는 곳이에요..."
+          },
+          "tags": {
+            "type": "string",
+            "description": "관련 태그 및 카테고리 정보",
+            "example": "REVIEW 맛집 해운대"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "생성 일시"
+          }
+        }
+      },
+      "RsDataListSearchResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchResponse"
             }
           }
         }
@@ -9930,15 +10035,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
