@@ -2221,7 +2221,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsDataListMapStringString"
+                  "$ref": "#/components/schemas/RsDataListMapStringObject"
                 }
               }
             }
@@ -7765,7 +7765,7 @@
           }
         }
       },
-      "RsDataListMapStringString": {
+      "RsDataListMapStringObject": {
         "type": "object",
         "properties": {
           "resultCode": {
@@ -7779,7 +7779,7 @@
             "items": {
               "type": "object",
               "additionalProperties": {
-                "type": "string"
+                "type": "object"
               }
             }
           }
@@ -10035,15 +10035,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
