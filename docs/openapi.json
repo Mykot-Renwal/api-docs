@@ -2479,6 +2479,37 @@
         }
       }
     },
+    "/api/v1/reservations/{id}/confirm": {
+      "post": {
+        "tags": [
+          "reservation-controller"
+        ],
+        "operationId": "confirm",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/post": {
       "get": {
         "tags": [
@@ -4645,6 +4676,57 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/RsDataListRouteListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reservations/supporter/me": {
+      "get": {
+        "tags": [
+          "reservation-controller"
+        ],
+        "operationId": "getMyReservations",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListReservationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reservations/count/pending/{supporterId}": {
+      "get": {
+        "tags": [
+          "reservation-controller"
+        ],
+        "operationId": "getPendingCount",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -9791,6 +9873,39 @@
           }
         }
       },
+      "ReservationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string"
+          },
+          "paymentId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "RsDataListReservationDto": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReservationDto"
+            }
+          }
+        }
+      },
       "PostPageResponse": {
         "type": "object",
         "description": "게시글 목록 페이징 응답 데이터",
@@ -10291,6 +10406,13 @@
             "type": "string"
           },
           "accountNumber": {
+            "type": "string"
+          },
+          "reservationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reservationStatus": {
             "type": "string"
           }
         }
