@@ -8047,9 +8047,12 @@
             "example": true
           },
           "sns": {
-            "type": "string",
+            "type": "array",
             "description": "sns 링크",
-            "example": "instagram.com"
+            "example": "instagram.com",
+            "items": {
+              "type": "string"
+            }
           },
           "location": {
             "type": "string",
@@ -8069,6 +8072,11 @@
             "items": {
               "$ref": "#/components/schemas/ScheduleDto"
             }
+          },
+          "foreignServiceAvailable": {
+            "type": "boolean",
+            "description": "외국인 관광객 서비스 제공 여부 (무료 지원 동의)",
+            "example": true
           }
         },
         "required": [
@@ -9499,9 +9507,12 @@
             "example": 2
           },
           "sns": {
-            "type": "string",
+            "type": "array",
             "description": "sns 링크",
-            "example": "instagram.com"
+            "example": "instagram.com",
+            "items": {
+              "type": "string"
+            }
           },
           "location": {
             "type": "string",
@@ -9528,6 +9539,11 @@
             "items": {
               "$ref": "#/components/schemas/ScheduleResponse"
             }
+          },
+          "foreignServiceAvailable": {
+            "type": "boolean",
+            "description": "외국인 관광객 서비스 제공 여부 (무료 지원 동의)",
+            "example": true
           }
         }
       },
@@ -10150,15 +10166,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
