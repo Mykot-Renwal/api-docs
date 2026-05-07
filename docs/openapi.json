@@ -1331,6 +1331,46 @@
         }
       }
     },
+    "/api/v1/admin/supporters/{mateId}/fee-rate": {
+      "put": {
+        "tags": [
+          "Admin - Supporter API"
+        ],
+        "summary": "수수료 변경",
+        "description": "해당 메이트의 수수료를 변경합니다.",
+        "operationId": "updateFeeRate",
+        "parameters": [
+          {
+            "name": "mateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "number",
+                  "format": "double"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/admin/popups/{id}": {
       "put": {
         "tags": [
@@ -6404,6 +6444,20 @@
             "items": {
               "type": "string"
             }
+          },
+          "spendingTime": {
+            "type": "string"
+          },
+          "expense": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "durationToNext": {
+            "type": "string"
+          },
+          "transportExpense": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -8266,8 +8320,7 @@
             "minLength": 1
           },
           "businessNumber": {
-            "type": "string",
-            "minLength": 1
+            "type": "string"
           },
           "licenseImages": {
             "type": "array",
@@ -9872,6 +9925,20 @@
           },
           "linkUrl": {
             "type": "string"
+          },
+          "spendingTime": {
+            "type": "string"
+          },
+          "expense": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "durationToNext": {
+            "type": "string"
+          },
+          "transportExpense": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -10166,15 +10233,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -10430,6 +10497,14 @@
           },
           "reservationStatus": {
             "type": "string"
+          },
+          "feeRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "serviceRate": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
