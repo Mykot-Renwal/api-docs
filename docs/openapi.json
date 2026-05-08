@@ -4589,7 +4589,7 @@
           "통합 검색"
         ],
         "summary": "통합 검색 실행",
-        "description": "키워드를 입력받아 게시글, 루트, 서포터 등 서비스 내 모든 데이터를 검색합니다.",
+        "description": "키워드를 입력받아 페이징 처리된 검색 결과를 반환합니다.",
         "operationId": "search",
         "parameters": [
           {
@@ -4601,6 +4601,39 @@
               "type": "string"
             },
             "example": "부산 맛집"
+          },
+          {
+            "name": "domainType",
+            "in": "query",
+            "description": "특정 도메인만 필터링 (POST, ROUTE, SUPPORTER, FRIENDS)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "페이지 번호 (0부터 시작)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            },
+            "example": 0
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "페이지 크기",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            },
+            "example": 10
           }
         ],
         "responses": {
@@ -4619,7 +4652,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsDataListSearchResponse"
+                  "$ref": "#/components/schemas/RsDataPageSearchResponse"
                 }
               }
             }
@@ -9687,6 +9720,11 @@
             "description": "관련 태그 및 카테고리 정보",
             "example": "REVIEW 맛집 해운대"
           },
+          "imageUrl": {
+            "type": "string",
+            "description": "썸네일 이미지 경로",
+            "example": "https://..."
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -9694,7 +9732,79 @@
           }
         }
       },
-      "RsDataListSearchResponse": {
+      "PageSearchResponse": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageableObject": {
+        "type": "object",
+        "properties": {
+          "paged": {
+            "type": "boolean"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          }
+        }
+      },
+      "RsDataPageSearchResponse": {
         "type": "object",
         "properties": {
           "resultCode": {
@@ -9704,10 +9814,21 @@
             "type": "string"
           },
           "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SearchResponse"
-            }
+            "$ref": "#/components/schemas/PageSearchResponse"
+          }
+        }
+      },
+      "SortObject": {
+        "type": "object",
+        "properties": {
+          "sorted": {
+            "type": "boolean"
+          },
+          "unsorted": {
+            "type": "boolean"
+          },
+          "empty": {
+            "type": "boolean"
           }
         }
       },
@@ -10233,44 +10354,18 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "empty": {
             "type": "boolean"
-          }
-        }
-      },
-      "PageableObject": {
-        "type": "object",
-        "properties": {
-          "paged": {
-            "type": "boolean"
-          },
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "unpaged": {
-            "type": "boolean"
-          },
-          "offset": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
           }
         }
       },
@@ -10285,20 +10380,6 @@
           },
           "data": {
             "$ref": "#/components/schemas/PageMyCommentResponse"
-          }
-        }
-      },
-      "SortObject": {
-        "type": "object",
-        "properties": {
-          "sorted": {
-            "type": "boolean"
-          },
-          "unsorted": {
-            "type": "boolean"
-          },
-          "empty": {
-            "type": "boolean"
           }
         }
       },
