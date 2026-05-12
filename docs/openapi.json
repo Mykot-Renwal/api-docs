@@ -2519,37 +2519,6 @@
         }
       }
     },
-    "/api/v1/reservations/{id}/confirm": {
-      "post": {
-        "tags": [
-          "reservation-controller"
-        ],
-        "operationId": "confirm",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/RsDataVoid"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/post": {
       "get": {
         "tags": [
@@ -4062,6 +4031,61 @@
         }
       }
     },
+    "/api/v1/reservations/{id}/reject": {
+      "patch": {
+        "tags": [
+          "reservation-controller"
+        ],
+        "operationId": "rejectReservation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/reservations/{id}/confirm": {
+      "patch": {
+        "tags": [
+          "reservation-controller"
+        ],
+        "operationId": "confirm",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/partner/{partnerId}/promoted": {
       "patch": {
         "tags": [
@@ -5245,6 +5269,26 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "peopleCount",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "optionNames",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -7954,6 +7998,18 @@
           }
         }
       },
+      "AdditionalOptionDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "CertificationDto": {
         "type": "object",
         "properties": {
@@ -8164,6 +8220,13 @@
             "type": "boolean",
             "description": "외국인 관광객 서비스 제공 여부 (무료 지원 동의)",
             "example": true
+          },
+          "additionalOptions": {
+            "type": "array",
+            "description": "추가 옵션",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalOptionDto"
+            }
           }
         },
         "required": [
@@ -9630,6 +9693,12 @@
             "type": "boolean",
             "description": "외국인 관광객 서비스 제공 여부 (무료 지원 동의)",
             "example": true
+          },
+          "additionalOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalOptionDto"
+            }
           }
         }
       },
@@ -9764,15 +9833,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -10355,15 +10424,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -10587,6 +10656,13 @@
           "serviceRate": {
             "type": "integer",
             "format": "int64"
+          },
+          "bankCode": {
+            "type": "string"
+          },
+          "peopleCount": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
