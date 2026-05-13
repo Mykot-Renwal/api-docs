@@ -2006,6 +2006,47 @@
         }
       }
     },
+    "/api/v1/users/refresh": {
+      "post": {
+        "tags": [
+          "유저 관리 API"
+        ],
+        "summary": "토큰 재발급",
+        "description": "Refresh Token을 이용해 새로운 Access Token을 발급받습니다.",
+        "operationId": "refresh",
+        "parameters": [
+          {
+            "name": "Refresh-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Client-Platform",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "web"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users/logout": {
       "post": {
         "tags": [
@@ -2034,8 +2075,19 @@
           "유저 관리 API"
         ],
         "summary": "로그인",
-        "description": "아이디와 비밀번호를 통해 인증을 수행하고 토큰 쿠키를 발급합니다.",
+        "description": "아이디와 비밀번호를 통해 인증을 수행하고 플랫폼별 토큰을 발급합니다.",
         "operationId": "login",
+        "parameters": [
+          {
+            "name": "X-Client-Platform",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "web"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7887,6 +7939,20 @@
           }
         }
       },
+      "RsDataString": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          }
+        }
+      },
       "LoginRequest": {
         "type": "object",
         "description": "로그인 요청 데이터",
@@ -8620,20 +8686,6 @@
           "data": {
             "type": "integer",
             "format": "int64"
-          }
-        }
-      },
-      "RsDataString": {
-        "type": "object",
-        "properties": {
-          "resultCode": {
-            "type": "string"
-          },
-          "msg": {
-            "type": "string"
-          },
-          "data": {
-            "type": "string"
           }
         }
       },
