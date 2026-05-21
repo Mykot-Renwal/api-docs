@@ -2974,6 +2974,39 @@
         }
       }
     },
+    "/api/v1/payment/paypal-success": {
+      "post": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "processPayPalSuccess",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayPalSuccessRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/password/reset": {
       "post": {
         "tags": [
@@ -7037,7 +7070,10 @@
               "WALK",
               "CAR",
               "PUBLIC_TRANSPORTATION",
-              "BICYCLE"
+              "BICYCLE",
+              "BUS",
+              "SUBWAY",
+              "TAXI"
             ]
           },
           "transportMemo": {
@@ -8857,6 +8893,37 @@
           }
         }
       },
+      "PayPalSuccessRequest": {
+        "type": "object",
+        "properties": {
+          "paypalOrderId": {
+            "type": "string"
+          },
+          "paypalTid": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "buyerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mateId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hours": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "peopleCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "PasswordResetRequest": {
         "type": "object",
         "description": "비밀번호 재설정 요청 데이터",
@@ -9537,6 +9604,12 @@
             "format": "int64",
             "description": "사용자가 받은(또는 누른) 총 좋아요 수",
             "example": 128
+          },
+          "routeCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "사용자가 작성한 총 루트  수",
+            "example": 10
           }
         }
       },
