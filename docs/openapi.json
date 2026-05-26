@@ -2228,7 +2228,7 @@
           "마이콧 관광정보"
         ],
         "summary": "관광 데이터 수집",
-        "description": "타입(PHOTO/PLACE)에 따라 데이터를 수집합니다.",
+        "description": "타입(PHOTO/PLACE/INFO)에 따라 데이터를 수집합니다.",
         "operationId": "fetchTourData",
         "requestBody": {
           "content": {
@@ -10482,15 +10482,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11073,15 +11073,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
