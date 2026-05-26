@@ -5036,6 +5036,36 @@
         }
       }
     },
+    "/api/v1/routes/my-drafts": {
+      "get": {
+        "tags": [
+          "마이콧 로컬루트"
+        ],
+        "operationId": "getMyDrafts",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/reservations/supporter/me": {
       "get": {
         "tags": [
@@ -7027,6 +7057,12 @@
               "NORMAL",
               "EVENT"
             ]
+          },
+          "draft": {
+            "type": "boolean"
+          },
+          "isDraft": {
+            "type": "boolean"
           }
         }
       },
@@ -10540,10 +10576,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
           "empty": {
@@ -10618,6 +10654,15 @@
           "isLiked": {
             "type": "boolean",
             "description": "현재 사용자 좋아요 여부"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "최종 수정일",
+            "example": "2026-05-22T13:39:00"
+          },
+          "draft": {
+            "type": "boolean"
           }
         }
       },
