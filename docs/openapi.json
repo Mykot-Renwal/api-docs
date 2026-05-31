@@ -7084,6 +7084,38 @@
         }
       }
     },
+    "/api/auth/social-init": {
+      "get": {
+        "tags": [
+          "app-auth-controller"
+        ],
+        "operationId": "socialLoginInit",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isApp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/supporters/{id}/admin": {
       "delete": {
         "tags": [
@@ -10935,15 +10967,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11538,15 +11570,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
