@@ -10967,15 +10967,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11053,6 +11053,13 @@
           "coverImagePath": {
             "type": "string",
             "description": "대표 이미지 URL"
+          },
+          "imagePaths": {
+            "type": "array",
+            "description": "코스 내부 이미지 URL 리스트 (최대 4장)",
+            "items": {
+              "type": "string"
+            }
           },
           "duration": {
             "type": "string",
@@ -11570,15 +11577,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
