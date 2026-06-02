@@ -7804,6 +7804,15 @@
             "type": "string",
             "description": "작성자 프로필 이미지 URL",
             "example": "https://api.mykot.com/profiles/user5.jpg"
+          },
+          "mateId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "서포터즈 고유 식별자(ID)",
+            "example": 10
+          },
+          "mate": {
+            "type": "boolean"
           }
         }
       },
