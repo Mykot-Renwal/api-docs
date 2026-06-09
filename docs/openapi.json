@@ -5046,6 +5046,14 @@
             "example": "서울"
           },
           {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          },
+          {
             "name": "duration",
             "in": "query",
             "description": "가이드 가능 기간 (TWO_THREE_DAYS, FOUR_FIVE_DAYS, SIX_DAYS_PLUS)",
@@ -8053,9 +8061,6 @@
             "description": "새로운 메뉴 사진 첨부 여부",
             "example": true
           },
-          "photoDeleted": {
-            "type": "boolean"
-          },
           "halal": {
             "type": "boolean"
           },
@@ -8063,6 +8068,9 @@
             "type": "boolean"
           },
           "main": {
+            "type": "boolean"
+          },
+          "photoDeleted": {
             "type": "boolean"
           },
           "isHalal": {
@@ -10994,6 +11002,9 @@
       "PageableObject": {
         "type": "object",
         "properties": {
+          "unpaged": {
+            "type": "boolean"
+          },
           "paged": {
             "type": "boolean"
           },
@@ -11004,9 +11015,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "unpaged": {
-            "type": "boolean"
           },
           "offset": {
             "type": "integer",
@@ -11125,6 +11133,9 @@
             "format": "date-time",
             "description": "최종 수정일",
             "example": "2026-05-22T13:39:00"
+          },
+          "isBookmarked": {
+            "type": "boolean"
           },
           "draft": {
             "type": "boolean"
