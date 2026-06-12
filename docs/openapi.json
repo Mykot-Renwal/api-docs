@@ -8064,9 +8064,6 @@
             "description": "새로운 메뉴 사진 첨부 여부",
             "example": true
           },
-          "photoDeleted": {
-            "type": "boolean"
-          },
           "halal": {
             "type": "boolean"
           },
@@ -8074,6 +8071,9 @@
             "type": "boolean"
           },
           "main": {
+            "type": "boolean"
+          },
+          "photoDeleted": {
             "type": "boolean"
           },
           "isHalal": {
@@ -11010,9 +11010,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "unpaged": {
-            "type": "boolean"
-          },
           "paged": {
             "type": "boolean"
           },
@@ -11023,6 +11020,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
@@ -11050,10 +11050,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
           "empty": {
