@@ -10726,6 +10726,13 @@
           },
           "title": {
             "type": "string"
+          },
+          "imagePaths": {
+            "type": "array",
+            "description": "루트 내부 이미지 URL 리스트 (최대 4장)",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -10789,6 +10796,11 @@
           "name": {
             "type": "string",
             "description": "성명",
+            "example": "홍길동"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "닉네임",
             "example": "홍길동"
           },
           "email": {
@@ -10931,6 +10943,13 @@
             "description": "메이트가 작성한 추천 루트 목록",
             "items": {
               "$ref": "#/components/schemas/RouteDto"
+            }
+          },
+          "routeImagePaths": {
+            "type": "array",
+            "description": "작성한 모든 루트들의 대표 이미지 리스트 (최대 4장)",
+            "items": {
+              "type": "string"
             }
           },
           "certifications": {
@@ -11132,15 +11151,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11752,15 +11771,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
