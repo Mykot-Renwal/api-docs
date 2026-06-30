@@ -7820,9 +7820,6 @@
             "type": "string",
             "description": "태그"
           },
-          "shared": {
-            "type": "boolean"
-          },
           "isShared": {
             "type": "boolean",
             "description": "커뮤니티 동시 등록 여부",
@@ -10609,6 +10606,17 @@
               "type": "string"
             }
           },
+          "referenceImageUrl": {
+            "type": "string",
+            "description": "후기 원본 아이템 썸네일 URL"
+          },
+          "referenceImageUrls": {
+            "type": "array",
+            "description": "후기 원본 아이템 다중 이미지 URL 목록",
+            "items": {
+              "type": "string"
+            }
+          },
           "liked": {
             "type": "boolean"
           },
@@ -11169,9 +11177,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "unpaged": {
-            "type": "boolean"
-          },
           "paged": {
             "type": "boolean"
           },
@@ -11182,6 +11187,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
