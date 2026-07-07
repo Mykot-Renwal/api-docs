@@ -5328,7 +5328,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsDataListRouteListResponse"
+                  "$ref": "#/components/schemas/RsDataMultiRouteRecommendationResponse"
                 }
               }
             }
@@ -11496,6 +11496,55 @@
           },
           "data": {
             "$ref": "#/components/schemas/RouteDetailResponse"
+          }
+        }
+      },
+      "MultiRouteRecommendationResponse": {
+        "type": "object",
+        "properties": {
+          "byLikes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteListResponse"
+            }
+          },
+          "byLatest": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteListResponse"
+            }
+          },
+          "byBookmarks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteListResponse"
+            }
+          },
+          "byReviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteListResponse"
+            }
+          },
+          "byRatings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteListResponse"
+            }
+          }
+        }
+      },
+      "RsDataMultiRouteRecommendationResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/MultiRouteRecommendationResponse"
           }
         }
       },
