@@ -3830,7 +3830,7 @@
           "이메일 인증 API"
         ],
         "summary": "인증 코드 발송",
-        "description": "인증코드를 이메일로 발송합니다.",
+        "description": "인증코드를 이메일로 발송합니다. (type에 \u0027SIGNUP\u0027을 넣으면 가입용, 생략하면 비번찾기용)",
         "operationId": "requestCode",
         "requestBody": {
           "content": {
@@ -9926,6 +9926,11 @@
             "description": "인증 번호를 받을 이메일 주소",
             "example": "user@example.com",
             "minLength": 1
+          },
+          "type": {
+            "type": "string",
+            "description": "요청 타입 (SIGNUP, RESET 등)",
+            "example": "SIGNUP"
           }
         }
       },
@@ -11187,6 +11192,9 @@
       "PageableObject": {
         "type": "object",
         "properties": {
+          "unpaged": {
+            "type": "boolean"
+          },
           "paged": {
             "type": "boolean"
           },
@@ -11197,9 +11205,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "unpaged": {
-            "type": "boolean"
           },
           "offset": {
             "type": "integer",
