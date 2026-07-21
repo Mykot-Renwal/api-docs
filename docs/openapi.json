@@ -2496,6 +2496,28 @@
             }
           },
           {
+            "name": "page",
+            "in": "query",
+            "description": "페이지 번호 (0부터 시작)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "한 페이지당 개수",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 16
+            }
+          },
+          {
             "name": "user",
             "in": "query",
             "required": true,
@@ -2520,7 +2542,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RsDataListRouteListResponse"
+                  "$ref": "#/components/schemas/RsDataPageRouteListResponse"
                 }
               }
             }
@@ -11174,15 +11196,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11192,9 +11214,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "unpaged": {
-            "type": "boolean"
-          },
           "paged": {
             "type": "boolean"
           },
@@ -11205,6 +11224,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
@@ -11237,6 +11259,52 @@
           },
           "unsorted": {
             "type": "boolean"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageRouteListResponse": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteListResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11332,7 +11400,7 @@
           }
         }
       },
-      "RsDataListRouteListResponse": {
+      "RsDataPageRouteListResponse": {
         "type": "object",
         "properties": {
           "resultCode": {
@@ -11342,10 +11410,7 @@
             "type": "string"
           },
           "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RouteListResponse"
-            }
+            "$ref": "#/components/schemas/PageRouteListResponse"
           }
         }
       },
@@ -11577,6 +11642,23 @@
           },
           "data": {
             "$ref": "#/components/schemas/MultiRouteRecommendationResponse"
+          }
+        }
+      },
+      "RsDataListRouteListResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RouteListResponse"
+            }
           }
         }
       },
@@ -11857,15 +11939,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
