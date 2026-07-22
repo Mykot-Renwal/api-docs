@@ -4229,6 +4229,75 @@
         }
       }
     },
+    "/api/v1/supporters/{id}/suspend": {
+      "patch": {
+        "tags": [
+          "서포터즈 API"
+        ],
+        "summary": "관리자 서포터 정보 일시정지",
+        "description": "관리자가 일시정지 사유를 입력하여 여행친구를 일시정지 처리합니다.",
+        "operationId": "suspendSupporterByAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "reason",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "일시정지 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataVoid"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataVoid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "서포터 정보를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/supporters/my": {
       "get": {
         "tags": [
@@ -11196,15 +11265,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11296,15 +11365,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11939,15 +12008,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
