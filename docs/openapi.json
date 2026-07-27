@@ -1516,11 +1516,36 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateBenefitPartnerRequest"
+                "type": "object",
+                "properties": {
+                  "request": {
+                    "$ref": "#/components/schemas/UpdateBenefitPartnerRequest"
+                  },
+                  "mainImage": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "detailImages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "menuImages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                },
+                "required": [
+                  "request"
+                ]
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -8292,9 +8317,6 @@
             "description": "새로운 메뉴 사진 첨부 여부",
             "example": true
           },
-          "photoDeleted": {
-            "type": "boolean"
-          },
           "halal": {
             "type": "boolean"
           },
@@ -8302,6 +8324,9 @@
             "type": "boolean"
           },
           "main": {
+            "type": "boolean"
+          },
+          "photoDeleted": {
             "type": "boolean"
           },
           "isHalal": {
@@ -11283,9 +11308,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "unpaged": {
-            "type": "boolean"
-          },
           "paged": {
             "type": "boolean"
           },
@@ -11296,6 +11318,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
