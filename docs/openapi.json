@@ -4446,6 +4446,78 @@
         }
       }
     },
+    "/api/v1/routes/{id}/status": {
+      "patch": {
+        "tags": [
+          "마이콧 로컬루트"
+        ],
+        "summary": "관리자 로컬 루트 상태 변경",
+        "description": "관리자가 특정 코스의 상태(승인, 일시정지 등)를 변경합니다.",
+        "operationId": "updateRouteStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "상태를 변경할 루트의 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRouteStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "상태 변경 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "관리자 권한 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "해당 루트를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/reservations/{id}/reject": {
       "patch": {
         "tags": [
@@ -5599,6 +5671,50 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/routes/admin/list": {
+      "get": {
+        "tags": [
+          "마이콧 로컬루트"
+        ],
+        "summary": "관리자 전용 코스 목록 조회",
+        "description": "관리자가 상태(PAUSED, APPROVED 등)별 코스 목록을 조회합니다.",
+        "operationId": "getAdminRoutesList",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "APPROVED",
+                "PAUSED"
+              ]
+            }
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListRouteListResponse"
                 }
               }
             }
@@ -10178,6 +10294,18 @@
           }
         }
       },
+      "UpdateRouteStatusRequest": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "PAUSED"
+            ]
+          }
+        }
+      },
       "AdminDeleteRequest": {
         "type": "object",
         "properties": {
@@ -11339,15 +11467,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11357,9 +11485,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "unpaged": {
-            "type": "boolean"
-          },
           "paged": {
             "type": "boolean"
           },
@@ -11370,6 +11495,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
@@ -11439,15 +11567,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11537,6 +11665,14 @@
           },
           "isBookmarked": {
             "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "description": "코스 노출 상태 (APPROVED, PAUSED)",
+            "enum": [
+              "APPROVED",
+              "PAUSED"
+            ]
           },
           "draft": {
             "type": "boolean"
@@ -12082,15 +12218,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
