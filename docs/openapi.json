@@ -34,6 +34,10 @@
       "description": "전문가 정보 관리 API"
     },
     {
+      "name": "UserBlockController",
+      "description": "사용자 차단(Block) API"
+    },
+    {
       "name": "Admin - Supporter API",
       "description": "관리자 전용 서포터즈 신청 관리 및 심사 API"
     },
@@ -84,6 +88,10 @@
     {
       "name": "관리자 - 구인 구직 관리",
       "description": "관리자 전용 구인 구직 관리 API"
+    },
+    {
+      "name": "ReportController",
+      "description": "신고(Report) 관리 API"
     },
     {
       "name": "게시글",
@@ -2792,6 +2800,38 @@
         }
       }
     },
+    "/api/v1/reports": {
+      "post": {
+        "tags": [
+          "ReportController"
+        ],
+        "summary": "신고하기",
+        "description": "게시글, 댓글, 사용자, 채팅 등을 신고합니다. 5회 누적 시 자동 숨김 처리됩니다.",
+        "operationId": "createReport",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/post": {
       "get": {
         "tags": [
@@ -3872,6 +3912,70 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/RsDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blocks/{blockedId}": {
+      "post": {
+        "tags": [
+          "UserBlockController"
+        ],
+        "summary": "사용자 차단하기",
+        "description": "특정 사용자를 차단합니다.",
+        "operationId": "blockUser",
+        "parameters": [
+          {
+            "name": "blockedId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataString"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "UserBlockController"
+        ],
+        "summary": "사용자 차단 해제하기",
+        "description": "특정 사용자의 차단을 해제합니다.",
+        "operationId": "unblockUser",
+        "parameters": [
+          {
+            "name": "blockedId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataString"
                 }
               }
             }
@@ -5880,6 +5984,16 @@
         "summary": "인기 게시글 조회",
         "description": "조회수나 좋아요가 높은 상위 인기 게시글 목록을 조회합니다.",
         "operationId": "getPopularPosts",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SecurityUser"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -7074,6 +7188,50 @@
         }
       }
     },
+    "/api/v1/blocks/me": {
+      "get": {
+        "tags": [
+          "UserBlockController"
+        ],
+        "summary": "내가 차단한 사용자 ID 목록 조회",
+        "description": "내가 차단한 사용자의 ID 목록을 반환합니다.",
+        "operationId": "getMyBlockedUserIds",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListLong"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blocks/me/list": {
+      "get": {
+        "tags": [
+          "UserBlockController"
+        ],
+        "summary": "내가 차단한 사용자 목록 상세 조회",
+        "description": "내가 차단한 사용자 목록을 반환합니다.",
+        "operationId": "getMyBlockedUsersList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataListUserBlockResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/auth/social-init": {
       "get": {
         "tags": [
@@ -8234,6 +8392,12 @@
             "format": "int64",
             "description": "댓글 고유 식별자(ID)",
             "example": 101
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "작성자 고유 식별자(ID)",
+            "example": 5
           },
           "comment": {
             "type": "string",
@@ -9729,6 +9893,49 @@
             }
           }
         }
+      },
+      "CreateReportRequest": {
+        "type": "object",
+        "properties": {
+          "targetType": {
+            "type": "string",
+            "description": "신고 대상 종류 (POST, COMMENT, USER, CHAT)",
+            "enum": [
+              "POST",
+              "COMMENT",
+              "USER",
+              "CHAT"
+            ],
+            "example": "POST"
+          },
+          "targetId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "신고 대상 ID",
+            "example": 1
+          },
+          "reason": {
+            "type": "string",
+            "description": "신고 사유 (SPAM, ABUSE, OBSCENE, OTHER)",
+            "enum": [
+              "SPAM",
+              "ABUSE",
+              "OBSCENE",
+              "OTHER"
+            ],
+            "example": "SPAM"
+          },
+          "detail": {
+            "type": "string",
+            "description": "상세 사유 (선택)",
+            "example": "부적절한 홍보성 글입니다."
+          }
+        },
+        "required": [
+          "reason",
+          "targetId",
+          "targetType"
+        ]
       },
       "RsDataCreatePostResponse": {
         "type": "object",
@@ -12535,6 +12742,60 @@
             "additionalProperties": {
               "type": "string"
             }
+          }
+        }
+      },
+      "RsDataListLong": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "RsDataListUserBlockResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserBlockResponse"
+            }
+          }
+        }
+      },
+      "UserBlockResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "blockedUserId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "profileUrl": {
+            "type": "string"
           }
         }
       },
