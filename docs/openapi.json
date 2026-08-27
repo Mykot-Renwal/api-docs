@@ -4113,6 +4113,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -7306,6 +7314,17 @@
           "apple-controller"
         ],
         "operationId": "redirectToApple",
+        "parameters": [
+          {
+            "name": "isApp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
