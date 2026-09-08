@@ -4834,6 +4834,68 @@
         }
       }
     },
+    "/api/v1/visits/stats": {
+      "get": {
+        "tags": [
+          "방문자"
+        ],
+        "summary": "방문자 통계 조회",
+        "description": "7일(7d), 30일(30d), 직접 설정(custom) 조건에 맞추어 방문자 수를 조회합니다.",
+        "operationId": "getVisitStats",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "description": "조회 기간 유형 (7d, 30d, custom)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "조회 기간 유형 (7d, 30d, custom)",
+              "example": "7d"
+            },
+            "example": "7d"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "직접 설정 시 시작일 (YYYY-MM-DD)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "직접 설정 시 시작일 (YYYY-MM-DD)",
+              "example": "2026-09-01"
+            },
+            "example": "2026-09-01"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "직접 설정 시 종료일 (YYYY-MM-DD)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "직접 설정 시 종료일 (YYYY-MM-DD)",
+              "example": "2026-09-07"
+            },
+            "example": "2026-09-07"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RsDataVisitStatsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users/{id}/profile": {
       "get": {
         "tags": [
@@ -8807,9 +8869,6 @@
             "description": "새로운 메뉴 사진 첨부 여부",
             "example": true
           },
-          "photoDeleted": {
-            "type": "boolean"
-          },
           "halal": {
             "type": "boolean"
           },
@@ -8817,6 +8876,9 @@
             "type": "boolean"
           },
           "main": {
+            "type": "boolean"
+          },
+          "photoDeleted": {
             "type": "boolean"
           },
           "isHalal": {
@@ -10706,6 +10768,65 @@
           }
         }
       },
+      "DailyVisitDto": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "RsDataVisitStatsResponse": {
+        "type": "object",
+        "properties": {
+          "resultCode": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/VisitStatsResponse"
+          }
+        }
+      },
+      "VisitStatsResponse": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "조회 시작일"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "description": "조회 종료일"
+          },
+          "totalVisits": {
+            "type": "integer",
+            "format": "int64",
+            "description": "기간 내 총 방문 횟수(기기 기준)"
+          },
+          "totalUniqueUsers": {
+            "type": "integer",
+            "format": "int64",
+            "description": "기간 내 로그인 고유 유저 수"
+          },
+          "dailyVisits": {
+            "type": "array",
+            "description": "일별 방문자 수 내역",
+            "items": {
+              "$ref": "#/components/schemas/DailyVisitDto"
+            }
+          }
+        }
+      },
       "RsDataUserPublicProfileResponse": {
         "type": "object",
         "properties": {
@@ -11918,10 +12039,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
           "empty": {
