@@ -10728,9 +10728,9 @@
           },
           "phone": {
             "type": "string",
-            "description": "휴대폰 번호 (010-XXXX-XXXX 형식)",
+            "description": "휴대폰 번호 (010-XXXX-XXXX 형식, 선택 사항)",
             "example": "010-1234-5678",
-            "pattern": "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$"
+            "pattern": "^(01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4})?$"
           },
           "name": {
             "type": "string",
